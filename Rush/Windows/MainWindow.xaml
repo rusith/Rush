@@ -51,7 +51,11 @@
                             </Expander>
                             <Expander Header="Order" Margin="0,10,0,0">
                                 <StackPanel Margin="20,5,0,0">
-                                    
+                                    <StackPanel AllowDrop="True" Name="OrderStackPanel" Orientation="Horizontal" Background="Aqua" Height="30"></StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label BorderBrush="#FF0C39FF" BorderThickness="2,0,0,0">Album</Label>
+                                        <Label BorderBrush="#FF0C39FF" BorderThickness="2,0,0,0" Margin="5,0,0,0">Artist</Label>
+                                    </StackPanel>
                                 </StackPanel>
                             </Expander>
                         </StackPanel>
