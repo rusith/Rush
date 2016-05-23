@@ -1,7 +1,6 @@
 ﻿
 using System;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -15,6 +14,16 @@ namespace Rush.Windows
         public MainWindow()
         {
             InitializeComponent();
+            InitializeControls();
+        }
+
+
+
+
+
+        private void InitializeControls()
+        {
+            OrderTextBox.Text = "<Artist>/<Album>";
         }
 
 
@@ -38,25 +47,6 @@ namespace Rush.Windows
                     if (notExistResult == System.Windows.Forms.DialogResult.Yes)
                         continue;
                     return;
-                    //if (notExistResult != System.Windows.Forms.DialogResult.Yes) continue;
-                    //try
-                    //{
-                    //    selectedDir.Create();
-                    //    if (!selectedDir.Exists)
-                    //        throw new Exception("Faild to create the folder");
-                    //}
-                    //catch (Exception)
-                    //{
-                    //    var cannotCreateDialogResult =
-                    //        MessageBox.Show(
-                    //            string.Format(
-                    //                "Cannot create director ({0}) . \nDo you want to try another location?",
-                    //                selectedDir.FullName), "Cannot Create Folder.", MessageBoxButtons.YesNo,
-                    //            MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                    //    if (cannotCreateDialogResult == System.Windows.Forms.DialogResult.Yes)
-                    //        continue;
-                    //    return;
-                    //}
                 }
                 var have = false;
                 foreach (ComboBoxItem cbi in SourceLocationsComboBox.Items)
@@ -121,7 +111,7 @@ namespace Rush.Windows
                     else
                         throw new Exception("cannot create file");
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     var result =
                         MessageBox.Show(
