@@ -58,8 +58,9 @@
     </ApplicationDefinition>
     <Compile Include="Controllers\RushController.cs" />
     <Compile Include="Converters\ComboBoxAndButtonTooltipMultiValueConverter.cs" />
+    <Compile Include="Converters\IntToBoolConverter.cs" />
     <Compile Include="Converters\ListSelectedToBool.cs" />
-    <Compile Include="Models\OrderDragData.cs" />
+    <Compile Include="Models\OrganizeOrder.cs" />
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -102,6 +103,7 @@
   <ItemGroup>
     <Resource Include="Windows\help.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

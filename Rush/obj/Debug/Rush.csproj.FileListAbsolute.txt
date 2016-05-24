@@ -15,11 +15,8 @@ c:\users\srlso_000\documents\visual studio 2013\Projects\Rush\Rush\obj\Debug\Rus
 c:\users\srlso_000\documents\visual studio 2013\Projects\Rush\Rush\obj\Debug\Rush.pdb
 c:\users\srlso_000\documents\visual studio 2013\Projects\Rush\Rush\obj\Debug\Rush.csprojResolveAssemblyReference.cache
 D:\rusith\Projects\Rush\Rush\bin\Debug\Rush.exe.config
-D:\rusith\Projects\Rush\Rush\obj\Debug\Rush.exe
-D:\rusith\Projects\Rush\Rush\obj\Debug\Rush.pdb
 D:\rusith\Projects\Rush\Rush\bin\Debug\Rush.exe
 D:\rusith\Projects\Rush\Rush\bin\Debug\Rush.pdb
-D:\rusith\Projects\Rush\Rush\obj\Debug\Rush.csprojResolveAssemblyReference.cache
 D:\rusith\Projects\Rush\Rush\obj\Debug\App.baml
 D:\rusith\Projects\Rush\Rush\obj\Debug\Windows\MainWindow.g.cs
 D:\rusith\Projects\Rush\Rush\obj\Debug\App.g.cs
@@ -30,3 +27,6 @@ D:\rusith\Projects\Rush\Rush\obj\Debug\Windows\MainWindow.baml
 D:\rusith\Projects\Rush\Rush\obj\Debug\Rush.g.resources
 D:\rusith\Projects\Rush\Rush\obj\Debug\Rush.Properties.Resources.resources
 D:\rusith\Projects\Rush\Rush\obj\Debug\Rush.csproj.GenerateResource.Cache
+D:\rusith\Projects\Rush\Rush\obj\Debug\Rush.exe
+D:\rusith\Projects\Rush\Rush\obj\Debug\Rush.pdb
+D:\rusith\Projects\Rush\Rush\obj\Debug\Rush.csprojResolveAssemblyReference.cache

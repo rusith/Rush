@@ -1,9 +1,12 @@
 ﻿
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Windows.Media;
+using Rush.Models;
 using MessageBox = System.Windows.Forms.MessageBox;
 using MessageBoxOptions = System.Windows.Forms.MessageBoxOptions;
 
@@ -17,15 +20,10 @@ namespace Rush.Windows
             InitializeControls();
         }
 
-
-
-
-
         private void InitializeControls()
         {
-            OrderTextBox.Text = "<Artist>/<Album>";
+            OrderTextBox.Text = "<Artist><Album><File>";
         }
-
 
         private void SelectSourceFolder()
         {
@@ -36,7 +34,7 @@ namespace Rush.Windows
                     Description = "select a new source folder to add source locations list"
                 };
                 var folderDialogResult = folderDialog.ShowDialog();
-                if (folderDialogResult != System.Windows.Forms.DialogResult.OK) continue;
+                if (folderDialogResult != System.Windows.Forms.DialogResult.OK) break;
                 var selectedDir = new DirectoryInfo(folderDialog.SelectedPath);
                 if (!selectedDir.Exists)
                 {
@@ -127,6 +125,61 @@ namespace Rush.Windows
             }
         }
 
+        private void ValidateOrderInput()
+        {
+            var text = OrderTextBox.Text;
+            if(text.Length<1)return;
+            var variables = Regex.Matches(text, "<.+?>");
+            if (variables.Count < 1 )
+            {
+                NotifyOrderValidatation("Order Expression Must Contain One Field Value.",true);
+                
+                return;
+            }
+            var containsFile = false;
+            foreach (Match match in variables)
+            {
+                containsFile=match.Value.ToLower() == "<file>";
+            }
+            if (!containsFile)
+            {
+                NotifyOrderValidatation("Order Expression Must Contain File Field Value.", true);
+                return;
+            }
+            var order = new OrganizeOrder();
+            for (var i = 0; i < variables.Count; i++)
+            {
+                var match = variables[i];
+                var value = match.Value.Substring(1, match.Value.Length - 2);
+                switch (value.ToLower())
+                {
+                    case "file":
+                    {
+                        if (i < variables.Count - 1)
+                        {
+                            NotifyOrderValidatation("File Must be the last Field",true);
+                            OrderTextBox.Select(match.Index,match.Length);
+                            return;
+                        }
+                        order.AddElement(OrderElement.File);
+                        break;
+                    }
+
+                }
+            }
+        }
+
+        private void NotifyOrderValidatation(string text, bool errorOrNotify)
+        {
+            if (string.IsNullOrEmpty(text))
+                return;
+            OrderValidationLabel.Foreground = (errorOrNotify ? Brushes.Tomato : Brushes.CornflowerBlue);
+            OrderTextBox.BorderBrush = OrderValidationLabel.Foreground;
+            OrderTextBox.SelectionBrush = Brushes.Tomato;
+            OrderValidationLabel.Content = text;
+            
+        }
+
         private void OnAddNewSourceFolderButtonClick(object sender, RoutedEventArgs e)
         {
             SelectSourceFolder();
@@ -149,6 +202,11 @@ namespace Rush.Windows
         private void OnDestinationBrowseButtonClick(object sender, RoutedEventArgs e)
         {
             SelectDestinationFolder();
+        }
+
+        private void OnOrderTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        {
+            ValidateOrderInput();
         }
     }
 }

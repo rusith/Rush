@@ -6,6 +6,7 @@
     <Window.Resources>
         <vc:ListSelectedToBool x:Key="ListSelectedToBoolConverter"></vc:ListSelectedToBool>
         <vc:ComboBoxAndButtonTooltipMultiValueConverter x:Key="ComboBoxAndButtonTooltipMultiValueConverter"></vc:ComboBoxAndButtonTooltipMultiValueConverter>
+        <vc:IntToBoolConverter x:Key="IntToBoolConverter"></vc:IntToBoolConverter>
     </Window.Resources>
     <Grid Margin="5,10,0,0">
         <StackPanel>
@@ -23,12 +24,12 @@
                                 </MultiBinding>
                             </Button.ToolTip>
                         </Button>
-                        <Button Name="SelectAllSourceFoldersButton" Click="OnClearAllSourceFoldersButtonClick" Margin="5,0,0,0" ToolTip="Clear All Locations">Clear</Button>
+                        <Button Name="SelectAllSourceFoldersButton" IsEnabled="{Binding Items.Count, ElementName=SourceLocationsComboBox, Mode=OneWay, Converter={StaticResource IntToBoolConverter}}"  Click="OnClearAllSourceFoldersButtonClick" Margin="5,0,0,0" ToolTip="Clear All Locations">Clear</Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                         <Label>Destination</Label>
-                        <TextBox Name="DestinationTextBox" Margin="35,0,0,0" Width="339" BorderBrush="#FF1286F1" BorderThickness="2,1,1,1"></TextBox>
-                        <Button Name="DestinationBrowseButton" Click="OnDestinationBrowseButtonClick" Margin="5,0,0,0">Browse</Button>
+                        <TextBox Name="DestinationTextBox" Margin="35,0,0,0" Width="339" BorderBrush="#FF1286F1" BorderThickness="2,1,1,1" ToolTip="The Destination Folder"></TextBox>
+                        <Button Name="DestinationBrowseButton" Click="OnDestinationBrowseButtonClick" Margin="5,0,0,0" ToolTip="Select The Destination Location">Browse</Button>
                     </StackPanel>
                 </StackPanel>
             </Expander>
@@ -46,9 +47,14 @@
                 </StackPanel>
             </Expander>
             <Expander Header="Order" Margin="0,10,0,0">
-                <StackPanel Orientation="Horizontal" Margin="20,5,0,0">
-                    <TextBox Name="OrderTextBox" BorderBrush="#FF1286F1" BorderThickness="2,1,1,1" Margin="0,0,32,0"></TextBox>
-                    <Image Source="help.png" Height="26" Width="57" />
+                <StackPanel Margin="20,5,0,0">
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBox Name="OrderTextBox" BorderBrush="#FF1286F1" BorderThickness="2,1,1,1" Margin="0,0,5,0" Width="533" TextChanged="OnOrderTextBoxTextChanged"></TextBox>
+                        <Image Source="help.png" Height="26" Width="36" />
+                    </StackPanel>
+                    <StackPanel Margin="20,5,0,0" >
+                        <Label Name="OrderValidationLabel" Foreground="Tomato" FontSize="11"></Label>
+                    </StackPanel>
                 </StackPanel>
             </Expander>
         </StackPanel>
