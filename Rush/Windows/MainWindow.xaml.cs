@@ -133,14 +133,12 @@ namespace Rush.Windows
             if (variables.Count < 1 )
             {
                 NotifyOrderValidatation("Order Expression Must Contain One Field Value.",true);
-                
                 return;
             }
             var containsFile = false;
             foreach (Match match in variables)
-            {
                 containsFile=match.Value.ToLower() == "<file>";
-            }
+            
             if (!containsFile)
             {
                 NotifyOrderValidatation("Order Expression Must Contain File Field Value.", true);
@@ -150,23 +148,48 @@ namespace Rush.Windows
             for (var i = 0; i < variables.Count; i++)
             {
                 var match = variables[i];
-                var value = match.Value.Substring(1, match.Value.Length - 2);
-                switch (value.ToLower())
+                var value = match.Value.Substring(1, match.Value.Length - 2).ToLower();
+                switch (value)
                 {
                     case "file":
-                    {
                         if (i < variables.Count - 1)
                         {
-                            NotifyOrderValidatation("File Must be the last Field",true);
-                            OrderTextBox.Select(match.Index,match.Length);
+                            NotifyOrderValidatation("File Must be the last Field", true);
+                            OrderTextBox.Select(match.Index, match.Length);
                             return;
                         }
                         order.AddElement(OrderElement.File);
-                        break;
-                    }
-
+                        continue;
+                    case "album":
+                        if (!order.AddElement(OrderElement.Album))
+                        {
+                            OrderTextBox.Text= text.Remove(match.Index, match.Length);
+                        }
+                        continue;
+                    case "artist":
+                        if (!order.AddElement(OrderElement.Artist))
+                        {
+                            OrderTextBox.Text = text.Remove(match.Index, match.Length);
+                        }
+                        continue;
+                    case "genre":
+                        if (!order.AddElement(OrderElement.Genre))
+                        {
+                            OrderTextBox.Text = text.Remove(match.Index, match.Length);
+                        }
+                        continue;
+                    case "year":
+                        if (!order.AddElement(OrderElement.Year))
+                        {
+                            OrderTextBox.Text = text.Remove(match.Index, match.Length);
+                        }
+                        continue;
                 }
             }
+
+            NotifyOrderValidatation(order.IsEmpty()?"   ":order.ToString(), false);
+            
+            
         }
 
         private void NotifyOrderValidatation(string text, bool errorOrNotify)
@@ -175,7 +198,7 @@ namespace Rush.Windows
                 return;
             OrderValidationLabel.Foreground = (errorOrNotify ? Brushes.Tomato : Brushes.CornflowerBlue);
             OrderTextBox.BorderBrush = OrderValidationLabel.Foreground;
-            OrderTextBox.SelectionBrush = Brushes.Tomato;
+            OrderTextBox.SelectionBrush = OrderValidationLabel.Foreground;
             OrderValidationLabel.Content = text;
             
         }
