@@ -60,6 +60,7 @@
     <Compile Include="Converters\ComboBoxAndButtonTooltipMultiValueConverter.cs" />
     <Compile Include="Converters\IntToBoolConverter.cs" />
     <Compile Include="Converters\ListSelectedToBool.cs" />
+    <Compile Include="Extensions\DIrectoryInfoExtensions.cs" />
     <Compile Include="Models\OrganizeOrder.cs" />
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

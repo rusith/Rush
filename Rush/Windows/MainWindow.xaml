@@ -37,12 +37,12 @@
             <Expander Header="File Types" Margin="0,10,0,0">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="20,5,0,0">
-                        <CheckBox Content="mp3" IsChecked="True"></CheckBox>
-                        <CheckBox Content="m4a" Margin="10,0,0,0"></CheckBox>
-                        <CheckBox Content="aac" Margin="10,0,0,0"></CheckBox>
-                        <CheckBox Content="falc" Margin="10,0,0,0"></CheckBox>
-                        <CheckBox Content="ogg" Margin="10,0,0,0"></CheckBox>
-                        <CheckBox Content="wma" Margin="10,0,0,0"></CheckBox>
+                        <CheckBox Name="Mp3CheckBox" Content="mp3" IsChecked="True"></CheckBox>
+                        <CheckBox Name="M4ACheckBox" Content="m4a" Margin="10,0,0,0"></CheckBox>
+                        <CheckBox Name="AacCheckBox" Content="aac" Margin="10,0,0,0"></CheckBox>
+                        <CheckBox Name="FalcCheckBox" Content="falc" Margin="10,0,0,0"></CheckBox>
+                        <CheckBox Name="OggCheckBox" Content="ogg" Margin="10,0,0,0"></CheckBox>
+                        <CheckBox Name="WmaCheckBox" Content="wma" Margin="10,0,0,0"></CheckBox>
                     </StackPanel>
                 </StackPanel>
             </Expander>

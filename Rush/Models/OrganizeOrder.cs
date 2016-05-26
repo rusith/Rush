@@ -38,6 +38,11 @@ namespace Rush.Models
             return text;
         }
 
+        public string ToOrderString()
+        {
+            return _order.Count < 1 ? "" : _order.Aggregate("", (current, item) => current + string.Format("<{0}>", ElemetToString(item)));
+        }
+
 
         public string ElemetToString(OrderElement element)
         {
