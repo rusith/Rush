@@ -30,3 +30,7 @@ D:\rusith\Projects\Rush\Rush\obj\Debug\Rush.csproj.GenerateResource.Cache
 D:\rusith\Projects\Rush\Rush\obj\Debug\Rush.exe
 D:\rusith\Projects\Rush\Rush\obj\Debug\Rush.pdb
 D:\rusith\Projects\Rush\Rush\obj\Debug\Rush.csprojResolveAssemblyReference.cache
+D:\rusith\Projects\Rush\Rush\obj\Debug\Windows\FileOrderHelpWindow.baml
+D:\rusith\Projects\Rush\Rush\obj\Debug\Windows\FileOrderHelpWindow.g.cs
+D:\rusith\Projects\Rush\Rush\obj\Debug\Windows\ProcessWindow.baml
+D:\rusith\Projects\Rush\Rush\obj\Debug\Windows\ProcessWindow.g.cs

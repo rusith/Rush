@@ -1,4 +1,5 @@
-﻿using Rush.Windows;
+﻿using System.Runtime.InteropServices;
+using Rush.Windows;
 
 namespace Rush.Controllers
 {
@@ -17,7 +18,7 @@ namespace Rush.Controllers
 
         public RushController()
         {
-            _mainWindow = new MainWindow();
+            _mainWindow = new MainWindow(this);
         }
 
         #endregion
@@ -29,6 +30,12 @@ namespace Rush.Controllers
         {
             if (_mainWindow != null)
                 _mainWindow.Show();
+        }
+
+        public void ShowFileOrderHelpWindow()
+        {
+            var helpWindow = new FileOrderHelpWindow();
+            helpWindow.ShowDialog();
         }
 
         #endregion

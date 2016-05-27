@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media;
+using Rush.Controllers;
 using Rush.Extensions;
 using Rush.Models;
 using MessageBox = System.Windows.Forms.MessageBox;
@@ -16,10 +17,14 @@ namespace Rush.Windows
 {
     public partial class MainWindow
     {
-        public MainWindow()
+
+        private readonly RushController _controller;
+
+        public MainWindow(RushController controller)
         {
             InitializeComponent();
             InitializeControls();
+            _controller = controller;
         }
 
         private void InitializeControls()
@@ -37,7 +42,14 @@ namespace Rush.Windows
                 };
                 var folderDialogResult = folderDialog.ShowDialog();
                 if (folderDialogResult != System.Windows.Forms.DialogResult.OK) break;
+                if (folderDialog.SelectedPath.Length < 4)
+                {
+                    MessageBox.Show("You have selected a drive . \nplease select a folder ",
+                        "cannot accept the location",MessageBoxButtons.OK,MessageBoxIcon.Stop,MessageBoxDefaultButton.Button1);
+                    continue;
+                }
                 var selectedDir = new DirectoryInfo(folderDialog.SelectedPath);
+                
                 if (!selectedDir.Exists)
                 {
                     var notExistResult = MessageBox.Show(
@@ -243,12 +255,18 @@ namespace Rush.Windows
                 oggCount = oggCount + dirInfo.GetFilesUsingExtensions(new[]{ "ogg" }).Count;
                 wmaCount = wmaCount + dirInfo.GetFilesUsingExtensions(new[]{ "wma" }).Count;
             }
-            Mp3CheckBox.Content = string.Format("mp3({0})", mp3Count);
-            M4ACheckBox.Content = string.Format("m4a({0})", m4ACount);
-            AacCheckBox.Content = string.Format("aac({0})", aacCount);
-            FalcCheckBox.Content = string.Format("falc({0})", falcCount);
-            OggCheckBox.Content = string.Format("ogg({0})", oggCount);
-            WmaCheckBox.Content = string.Format("wma({0})", wmaCount);
+            var isEmpty = items.Count < 1;
+            Mp3CheckBox.Content = isEmpty?"mp3" : string.Format("mp3({0})", mp3Count);
+            M4ACheckBox.Content = isEmpty ? "m4a" : string.Format("m4a({0})", m4ACount);
+            AacCheckBox.Content = isEmpty ? "aac" : string.Format("aac({0})", aacCount);
+            FalcCheckBox.Content = isEmpty ? "falc" : string.Format("falc({0})", falcCount);
+            OggCheckBox.Content = isEmpty ? "ogg" : string.Format("ogg({0})", oggCount);
+            WmaCheckBox.Content = isEmpty ? "wma" : string.Format("wma({0})", wmaCount);
+        }
+
+        private void Organize()
+        {
+            OrganizeButton.IsEnabled = false;
         }
 
         private void OnAddNewSourceFolderButtonClick(object sender, RoutedEventArgs e)
@@ -267,6 +285,7 @@ namespace Rush.Windows
         {
             if(SourceLocationsComboBox.Items.Count>0)
                 SourceLocationsComboBox.Items.Clear();
+            SetFileTypeItemCounts();
         }
 
         private void OnDestinationBrowseButtonClick(object sender, RoutedEventArgs e)
@@ -277,6 +296,46 @@ namespace Rush.Windows
         private void OnOrderTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
             ValidateOrderInput();
+        }
+
+        private void OnFileOrderHelpImagePreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            _controller.ShowFileOrderHelpWindow();
+        }
+
+        private void OnOrganizeButtonClick(object sender, RoutedEventArgs e)
+        {
+            Organize();
+        }
+
+        private void OnLocationExpanderCollapsed(object sender, RoutedEventArgs e)
+        {
+            Height -= 85;
+        }
+
+        private void OnLocationExpanderExpanded(object sender, RoutedEventArgs e)
+        {
+            Height += 85;
+        }
+
+        private void FileTypesExpanderCollapsed(object sender, RoutedEventArgs e)
+        {
+            Height -= 44;
+        }
+
+        private void FileTypesExpanderExpanded(object sender, RoutedEventArgs e)
+        {
+            Height += 44;
+        }
+
+        private void FileOrderExpanderCollapsed(object sender, RoutedEventArgs e)
+        {
+            Height -= 69;
+        }
+
+        private void FileOrderExpanderExpanded(object sender, RoutedEventArgs e)
+        {
+            Height += 69;
         }
     }
 }

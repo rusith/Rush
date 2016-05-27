@@ -1,62 +1,70 @@
 ﻿<Window x:Class="Rush.Windows.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="329" Width="645"
+        Title="MainWindow" Height="176.45" Width="645" MaxWidth="645"
         xmlns:vc="clr-namespace:Rush.Converters">
     <Window.Resources>
         <vc:ListSelectedToBool x:Key="ListSelectedToBoolConverter"></vc:ListSelectedToBool>
         <vc:ComboBoxAndButtonTooltipMultiValueConverter x:Key="ComboBoxAndButtonTooltipMultiValueConverter"></vc:ComboBoxAndButtonTooltipMultiValueConverter>
         <vc:IntToBoolConverter x:Key="IntToBoolConverter"></vc:IntToBoolConverter>
     </Window.Resources>
-    <Grid Margin="5,10,0,0">
-        <StackPanel>
-            <Expander Header="Locations">
-                <StackPanel Margin="20,5,0,0">
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Source Locations</Label>
-                        <ComboBox Name="SourceLocationsComboBox" ToolTip="Folders For Get media FIles From" Margin="5,0,0,0" Width="339" BorderBrush="#FF1286F1" BorderThickness="2,1,1,1"></ComboBox>
-                        <Button Name="AddSourceFolderButton" Click="OnAddNewSourceFolderButtonClick" Margin="5,0,0,0" ToolTip="Add New Location">Add</Button>
-                        <Button Content="Remove" Margin="5,0,0,0"  IsEnabled="{Binding SelectedIndex, Converter={StaticResource ListSelectedToBoolConverter}, ElementName=SourceLocationsComboBox}" Click="OnRemoveSelectedSourceFolderButtonClick">
-                            <Button.ToolTip>
-                                <MultiBinding Converter="{StaticResource ComboBoxAndButtonTooltipMultiValueConverter}">
-                                    <Binding ElementName="SourceLocationsComboBox" Path="SelectedIndex"></Binding>
-                                    <Binding ElementName="SourceLocationsComboBox" Path="SelectedItem"></Binding>
-                                </MultiBinding>
-                            </Button.ToolTip>
-                        </Button>
-                        <Button Name="SelectAllSourceFoldersButton" IsEnabled="{Binding Items.Count, ElementName=SourceLocationsComboBox, Mode=OneWay, Converter={StaticResource IntToBoolConverter}}"  Click="OnClearAllSourceFoldersButtonClick" Margin="5,0,0,0" ToolTip="Clear All Locations">Clear</Button>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Grid Margin="5,10,0,0">
+            <StackPanel>
+                <Expander x:Name="LocationExpander" Header="Locations" Collapsed="OnLocationExpanderCollapsed" Expanded="OnLocationExpanderExpanded">
+                    <StackPanel Margin="20,5,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Label>Source Locations</Label>
+                            <ComboBox Name="SourceLocationsComboBox" ToolTip="Folders For Get media FIles From" Margin="5,0,0,0" Width="339" BorderBrush="#FF1286F1" BorderThickness="2,1,1,1"></ComboBox>
+                            <Button Name="AddSourceFolderButton" Click="OnAddNewSourceFolderButtonClick" Margin="5,0,0,0" ToolTip="Add New Location">Add</Button>
+                            <Button Content="Remove" Margin="5,0,0,0"  IsEnabled="{Binding SelectedIndex, Converter={StaticResource ListSelectedToBoolConverter}, ElementName=SourceLocationsComboBox}" Click="OnRemoveSelectedSourceFolderButtonClick">
+                                <Button.ToolTip>
+                                    <MultiBinding Converter="{StaticResource ComboBoxAndButtonTooltipMultiValueConverter}">
+                                        <Binding ElementName="SourceLocationsComboBox" Path="SelectedIndex"></Binding>
+                                        <Binding ElementName="SourceLocationsComboBox" Path="SelectedItem"></Binding>
+                                    </MultiBinding>
+                                </Button.ToolTip>
+                            </Button>
+                            <Button Name="SelectAllSourceFoldersButton" IsEnabled="{Binding Items.Count, ElementName=SourceLocationsComboBox, Mode=OneWay, Converter={StaticResource IntToBoolConverter}}"  Click="OnClearAllSourceFoldersButtonClick" Margin="5,0,0,0" ToolTip="Clear All Locations">Clear</Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                            <Label>Destination</Label>
+                            <TextBox Name="DestinationTextBox" Margin="35,0,0,0" Width="339" BorderBrush="#FF1286F1" BorderThickness="2,1,1,1" ToolTip="The Destination Folder"></TextBox>
+                            <Button Name="DestinationBrowseButton" Click="OnDestinationBrowseButtonClick" Margin="5,0,0,0" ToolTip="Select The Destination Location">Browse</Button>
+                        </StackPanel>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                        <Label>Destination</Label>
-                        <TextBox Name="DestinationTextBox" Margin="35,0,0,0" Width="339" BorderBrush="#FF1286F1" BorderThickness="2,1,1,1" ToolTip="The Destination Folder"></TextBox>
-                        <Button Name="DestinationBrowseButton" Click="OnDestinationBrowseButtonClick" Margin="5,0,0,0" ToolTip="Select The Destination Location">Browse</Button>
-                    </StackPanel>
-                </StackPanel>
-            </Expander>
+                </Expander>
 
-            <Expander Header="File Types" Margin="0,10,0,0">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="20,5,0,0">
-                        <CheckBox Name="Mp3CheckBox" Content="mp3" IsChecked="True"></CheckBox>
-                        <CheckBox Name="M4ACheckBox" Content="m4a" Margin="10,0,0,0"></CheckBox>
-                        <CheckBox Name="AacCheckBox" Content="aac" Margin="10,0,0,0"></CheckBox>
-                        <CheckBox Name="FalcCheckBox" Content="falc" Margin="10,0,0,0"></CheckBox>
-                        <CheckBox Name="OggCheckBox" Content="ogg" Margin="10,0,0,0"></CheckBox>
-                        <CheckBox Name="WmaCheckBox" Content="wma" Margin="10,0,0,0"></CheckBox>
+                <Expander x:Name="FileTypesExpander" Header="File Types" Margin="0,10,0,0" Collapsed="FileTypesExpanderCollapsed" Expanded="FileTypesExpanderExpanded">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="20,5,0,0">
+                            <CheckBox Name="Mp3CheckBox" Content="mp3" IsChecked="True"></CheckBox>
+                            <CheckBox Name="M4ACheckBox" Content="m4a" Margin="10,0,0,0"></CheckBox>
+                            <CheckBox Name="AacCheckBox" Content="aac" Margin="10,0,0,0"></CheckBox>
+                            <CheckBox Name="FalcCheckBox" Content="falc" Margin="10,0,0,0"></CheckBox>
+                            <CheckBox Name="OggCheckBox" Content="ogg" Margin="10,0,0,0"></CheckBox>
+                            <CheckBox Name="WmaCheckBox" Content="wma" Margin="10,0,0,0"></CheckBox>
+                        </StackPanel>
+                    </StackPanel>
+                </Expander>
+                <Expander x:Name="FileOrderExpander" Header="File Order" Margin="0,10,0,0" Collapsed="FileOrderExpanderCollapsed" Expanded="FileOrderExpanderExpanded">
+                    <StackPanel Margin="20,5,0,0">
+                        <StackPanel Orientation="Horizontal" >
+                            <TextBox Name="OrderTextBox" BorderBrush="#FF1286F1" BorderThickness="2,1,1,1" Margin="0,0,5,0" Width="533" TextChanged="OnOrderTextBoxTextChanged" ToolTip="Enter the Order of the files you want in this input box (click help button for more informations)"></TextBox>
+                            <Image Name="FileOrderHelpImage" Source="help.png" Height="26" Width="36" PreviewMouseDown="OnFileOrderHelpImagePreviewMouseDown" />
+                        </StackPanel>
+                        <StackPanel Margin="20,5,0,0" >
+                            <Label Name="OrderValidationLabel" Foreground="Tomato" FontSize="11"></Label>
+                        </StackPanel>
+                    </StackPanel>
+                </Expander>
+                <StackPanel Margin="0,10,0,0">
+                    <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
+                        <Button x:Name="OrganizeButton"  Margin="10,0,0,0" Height="29" Click="OnOrganizeButtonClick">Organize</Button>
                     </StackPanel>
                 </StackPanel>
-            </Expander>
-            <Expander Header="Order" Margin="0,10,0,0">
-                <StackPanel Margin="20,5,0,0">
-                    <StackPanel Orientation="Horizontal" >
-                        <TextBox Name="OrderTextBox" BorderBrush="#FF1286F1" BorderThickness="2,1,1,1" Margin="0,0,5,0" Width="533" TextChanged="OnOrderTextBoxTextChanged"></TextBox>
-                        <Image Source="help.png" Height="26" Width="36" />
-                    </StackPanel>
-                    <StackPanel Margin="20,5,0,0" >
-                        <Label Name="OrderValidationLabel" Foreground="Tomato" FontSize="11"></Label>
-                    </StackPanel>
-                </StackPanel>
-            </Expander>
-        </StackPanel>
-    </Grid>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+   
 </Window>
