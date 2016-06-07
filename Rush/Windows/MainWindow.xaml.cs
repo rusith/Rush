@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -236,8 +237,13 @@ namespace Rush.Windows
 
         private void SetFileTypeItemCounts()
         {
-            int mp3Count=0,m4ACount=0,aacCount=0,falcCount=0,oggCount=0,wmaCount=0;
             var items = SourceLocationsComboBox.Items;
+            var mp3 = new List<FileInfo>();
+            var m4A = new List<FileInfo>();
+            var aac = new List<FileInfo>();
+            var falc = new List<FileInfo>();
+            var ogg = new List<FileInfo>();
+            var wma = new List<FileInfo>();
             foreach (var dirInfo 
                         in from ComboBoxItem item 
                         in items 
@@ -248,15 +254,35 @@ namespace Rush.Windows
                         into dirInfo 
                         where dirInfo.Exists select dirInfo)
             {
-                mp3Count = mp3Count + dirInfo.GetFilesUsingExtensions(new[]{"mp3"}).Count;
-                m4ACount = m4ACount + dirInfo.GetFilesUsingExtensions(new[]{"m4a"}).Count;
-                aacCount = aacCount + dirInfo.GetFilesUsingExtensions(new[]{ "aac" }).Count;
-                falcCount = falcCount + dirInfo.GetFilesUsingExtensions(new[]{ "falc" }).Count;
-                oggCount = oggCount + dirInfo.GetFilesUsingExtensions(new[]{ "ogg" }).Count;
-                wmaCount = wmaCount + dirInfo.GetFilesUsingExtensions(new[]{ "wma" }).Count;
+                mp3.AddRange(dirInfo.GetFilesUsingExtensions(new[] { "mp3" }));
+                m4A.AddRange(dirInfo.GetFilesUsingExtensions(new[] { "m4a" }));
+                aac.AddRange(dirInfo.GetFilesUsingExtensions(new[] { "aac" }));
+                falc.AddRange(dirInfo.GetFilesUsingExtensions(new[] { "falc" }));
+                ogg.AddRange(dirInfo.GetFilesUsingExtensions(new[] { "ogg" }));
+                wma.AddRange(dirInfo.GetFilesUsingExtensions(new[] { "wma" }));
+                //mp3Count = mp3Count + dirInfo.GetFilesUsingExtensions(new[]{"mp3"}).Count;
+                //m4ACount = m4ACount + dirInfo.GetFilesUsingExtensions(new[]{"m4a"}).Count;
+                //aacCount = aacCount + dirInfo.GetFilesUsingExtensions(new[]{ "aac" }).Count;
+                //falcCount = falcCount + dirInfo.GetFilesUsingExtensions(new[]{ "falc" }).Count;
+                //oggCount = oggCount + dirInfo.GetFilesUsingExtensions(new[]{ "ogg" }).Count;
+                //wmaCount = wmaCount + dirInfo.GetFilesUsingExtensions(new[]{ "wma" }).Count;
             }
+
+            mp3 = mp3.Distinct().ToList();
+            m4A = m4A.Distinct().ToList();
+            aac = aac.Distinct().ToList();
+            falc = falc.Distinct().ToList();
+            ogg = ogg.Distinct().ToList();
+            wma = wma.Distinct().ToList();
+
+            var mp3Count = mp3.Count;
+            var m4ACount = m4A.Count;
+            var aacCount = aac.Count;
+            var falcCount = falc.Count;
+            var oggCount = ogg.Count;
+            var wmaCount = wma.Count;
             var isEmpty = items.Count < 1;
-            Mp3CheckBox.Content = isEmpty?"mp3" : string.Format("mp3({0})", mp3Count);
+            Mp3CheckBox.Content = isEmpty? "mp3" : string.Format("mp3({0})", mp3Count);
             M4ACheckBox.Content = isEmpty ? "m4a" : string.Format("m4a({0})", m4ACount);
             AacCheckBox.Content = isEmpty ? "aac" : string.Format("aac({0})", aacCount);
             FalcCheckBox.Content = isEmpty ? "falc" : string.Format("falc({0})", falcCount);
@@ -308,34 +334,12 @@ namespace Rush.Windows
             Organize();
         }
 
-        private void OnLocationExpanderCollapsed(object sender, RoutedEventArgs e)
+        private void OnExitButtonClick(object sender, RoutedEventArgs e)
         {
-            Height -= 85;
-        }
-
-        private void OnLocationExpanderExpanded(object sender, RoutedEventArgs e)
-        {
-            Height += 85;
-        }
-
-        private void FileTypesExpanderCollapsed(object sender, RoutedEventArgs e)
-        {
-            Height -= 44;
-        }
-
-        private void FileTypesExpanderExpanded(object sender, RoutedEventArgs e)
-        {
-            Height += 44;
-        }
-
-        private void FileOrderExpanderCollapsed(object sender, RoutedEventArgs e)
-        {
-            Height -= 69;
-        }
-
-        private void FileOrderExpanderExpanded(object sender, RoutedEventArgs e)
-        {
-            Height += 69;
+            var confirmMessageResult = MessageBox.Show("Are you sure ? do you want to exit", "confirm exit",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+            if (confirmMessageResult == System.Windows.Forms.DialogResult.Yes)
+                System.Windows.Application.Current.Shutdown();
         }
     }
 }

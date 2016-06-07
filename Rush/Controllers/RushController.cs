@@ -13,7 +13,6 @@ namespace Rush.Controllers
 
         #endregion
 
-
         #region Constructors
 
         public RushController()
@@ -23,13 +22,16 @@ namespace Rush.Controllers
 
         #endregion
 
-
         #region Methods
 
         public void StartProgram()
         {
-            if (_mainWindow != null)
-                _mainWindow.Show();
+            _mainWindow?.Show();
+        }
+
+        public void Organize()
+        {
+
         }
 
         public void ShowFileOrderHelpWindow()
