@@ -260,12 +260,6 @@ namespace Rush.Windows
                 falc.AddRange(dirInfo.GetFilesUsingExtensions(new[] { "falc" }));
                 ogg.AddRange(dirInfo.GetFilesUsingExtensions(new[] { "ogg" }));
                 wma.AddRange(dirInfo.GetFilesUsingExtensions(new[] { "wma" }));
-                //mp3Count = mp3Count + dirInfo.GetFilesUsingExtensions(new[]{"mp3"}).Count;
-                //m4ACount = m4ACount + dirInfo.GetFilesUsingExtensions(new[]{"m4a"}).Count;
-                //aacCount = aacCount + dirInfo.GetFilesUsingExtensions(new[]{ "aac" }).Count;
-                //falcCount = falcCount + dirInfo.GetFilesUsingExtensions(new[]{ "falc" }).Count;
-                //oggCount = oggCount + dirInfo.GetFilesUsingExtensions(new[]{ "ogg" }).Count;
-                //wmaCount = wmaCount + dirInfo.GetFilesUsingExtensions(new[]{ "wma" }).Count;
             }
 
             mp3 = mp3.Distinct().ToList();
