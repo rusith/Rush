@@ -70,6 +70,10 @@
                             </Button.IsEnabled>
                         </Button>
                         <Button x:Name="ExitButton" Style="{DynamicResource SquareButtonStyle}" Margin="10,0,0,0" Width="57" Click="OnExitButtonClick" IsCancel="True" >Exit</Button>
+                        <CheckBox FontWeight="Bold" Margin="170,5,0,0" Width="121" Height="19" IsChecked="True"> Overwrite Existing</CheckBox>
+                        <RadioButton Margin="10,5,10,0">Move</RadioButton>
+                        <RadioButton Margin="0,5,0,0" IsChecked="True">Copy</RadioButton>
+                        <Label FontWeight="Bold">: File Operation</Label>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
