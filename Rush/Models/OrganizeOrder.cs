@@ -13,7 +13,7 @@ namespace Rush.Models
         ,File = 6
     }
 
-    class OrganizeOrder
+    public class OrganizeOrder
     {
         private readonly List<OrderElement> _order=new List<OrderElement>();
 

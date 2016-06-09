@@ -20,6 +20,13 @@ namespace Rush.Windows
     {
 
         private readonly RushController _controller;
+        private int _fileCount;
+        private int mp3Count;
+        private int m4ACount;
+        private int aacCount;
+        private int falcCount;
+        private int oggCount;
+        private int wmaCount;
 
         public MainWindow(RushController controller)
         {
@@ -220,8 +227,9 @@ namespace Rush.Windows
             if (string.IsNullOrEmpty(text))
                 return;
             OrderValidationLabel.Foreground = (errorOrNotify ? Brushes.Tomato : Brushes.CornflowerBlue);
-            OrderTextBox.BorderBrush = OrderValidationLabel.Foreground;
+            OrderTextBox.Tag = !errorOrNotify;
             OrderTextBox.SelectionBrush = OrderValidationLabel.Foreground;
+
             OrderValidationLabel.Content = text;
             
         }
@@ -260,12 +268,6 @@ namespace Rush.Windows
                 falc.AddRange(dirInfo.GetFilesUsingExtensions(new[] { "falc" }));
                 ogg.AddRange(dirInfo.GetFilesUsingExtensions(new[] { "ogg" }));
                 wma.AddRange(dirInfo.GetFilesUsingExtensions(new[] { "wma" }));
-                //mp3Count = mp3Count + dirInfo.GetFilesUsingExtensions(new[]{"mp3"}).Count;
-                //m4ACount = m4ACount + dirInfo.GetFilesUsingExtensions(new[]{"m4a"}).Count;
-                //aacCount = aacCount + dirInfo.GetFilesUsingExtensions(new[]{ "aac" }).Count;
-                //falcCount = falcCount + dirInfo.GetFilesUsingExtensions(new[]{ "falc" }).Count;
-                //oggCount = oggCount + dirInfo.GetFilesUsingExtensions(new[]{ "ogg" }).Count;
-                //wmaCount = wmaCount + dirInfo.GetFilesUsingExtensions(new[]{ "wma" }).Count;
             }
 
             mp3 = mp3.Distinct().ToList();
@@ -275,24 +277,72 @@ namespace Rush.Windows
             ogg = ogg.Distinct().ToList();
             wma = wma.Distinct().ToList();
 
-            var mp3Count = mp3.Count;
-            var m4ACount = m4A.Count;
-            var aacCount = aac.Count;
-            var falcCount = falc.Count;
-            var oggCount = ogg.Count;
-            var wmaCount = wma.Count;
+            mp3Count = mp3.Count;
+            m4ACount = m4A.Count;
+            aacCount = aac.Count;
+            falcCount = falc.Count;
+            oggCount = ogg.Count;
+            wmaCount = wma.Count;
             var isEmpty = items.Count < 1;
+
+            _fileCount = mp3Count + m4ACount + aacCount + falcCount + oggCount + wmaCount;
+
             Mp3CheckBox.Content = isEmpty? "mp3" : string.Format("mp3({0})", mp3Count);
             M4ACheckBox.Content = isEmpty ? "m4a" : string.Format("m4a({0})", m4ACount);
             AacCheckBox.Content = isEmpty ? "aac" : string.Format("aac({0})", aacCount);
             FalcCheckBox.Content = isEmpty ? "falc" : string.Format("falc({0})", falcCount);
             OggCheckBox.Content = isEmpty ? "ogg" : string.Format("ogg({0})", oggCount);
             WmaCheckBox.Content = isEmpty ? "wma" : string.Format("wma({0})", wmaCount);
+
+            Mp3CheckBox.Tag = mp3Count;
+            M4ACheckBox.Tag = m4ACount;
+            AacCheckBox.Tag = aacCount;
+            FalcCheckBox.Tag = falcCount;
+            OggCheckBox.Tag = oggCount;
+            WmaCheckBox.Tag = wmaCount;
         }
 
         private void Organize()
         {
+            if (_fileCount < 1)
+            {
+                 MessageBox.Show("No files present to organize in the selected folders.\nplease select another location that have supported file types ", "No Files",
+                    MessageBoxButtons.OK, MessageBoxIcon.Stop, MessageBoxDefaultButton.Button1);
+                return;
+            }
+            if (Mp3CheckBox.IsChecked == false && M4ACheckBox.IsChecked == false && AacCheckBox.IsChecked == false &&
+                FalcCheckBox.IsChecked == false && OggCheckBox.IsChecked == false && WmaCheckBox.IsChecked == false)
+            {
+                MessageBox.Show("File types not selected.\nyou should select at least one file type to continue", "File types not selected",
+                    MessageBoxButtons.OK, MessageBoxIcon.Stop, MessageBoxDefaultButton.Button1);
+                return;
+            }
+
+            {
+                var count = 0;
+                if (Mp3CheckBox.IsChecked.GetValueOrDefault())
+                    count += mp3Count;
+                if (M4ACheckBox.IsChecked.GetValueOrDefault())
+                    count += m4ACount;
+                if (AacCheckBox.IsChecked.GetValueOrDefault())
+                    count += aacCount;
+                if (FalcCheckBox.IsChecked.GetValueOrDefault())
+                    count += falcCount;
+                if (OggCheckBox.IsChecked.GetValueOrDefault())
+                    count += oggCount;
+                if (WmaCheckBox.IsChecked.GetValueOrDefault())
+                    count += wmaCount;
+
+                if (count < 1)
+                {
+                    MessageBox.Show("There are no files with selected file types.\nplease select file types that have at least one file","No Files to process",
+                        MessageBoxButtons.OK, MessageBoxIcon.Stop, MessageBoxDefaultButton.Button1);
+                    return;
+                }
+            }
+
             OrganizeButton.IsEnabled = false;
+            _controller.Organize();
         }
 
         private void OnAddNewSourceFolderButtonClick(object sender, RoutedEventArgs e)

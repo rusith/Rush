@@ -1,4 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using Rush.Models;
 using Rush.Windows;
 
 namespace Rush.Controllers
@@ -13,6 +15,14 @@ namespace Rush.Controllers
 
         #endregion
 
+        #region Properies
+
+        public HashSet<string> Sources { get; set; }
+        public string Destination { get; set; }
+        public OrganizeOrder Order { get; set; }
+
+        #endregion
+
         #region Constructors
 
         public RushController()
@@ -23,7 +33,7 @@ namespace Rush.Controllers
         #endregion
 
         #region Methods
-
+        
         public void StartProgram()
         {
             _mainWindow?.Show();
@@ -31,6 +41,10 @@ namespace Rush.Controllers
 
         public void Organize()
         {
+            if (Sources != null && Sources.Count > 0 && (!string.IsNullOrEmpty(Destination)) && Order != null)
+            {
+
+            }
 
         }
 

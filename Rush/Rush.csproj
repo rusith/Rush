@@ -57,9 +57,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Controllers\RushController.cs" />
+    <Compile Include="Converters\BoolToColorConverter.cs" />
     <Compile Include="Converters\ComboBoxAndButtonTooltipMultiValueConverter.cs" />
     <Compile Include="Converters\IntToBoolConverter.cs" />
     <Compile Include="Converters\ListSelectedToBool.cs" />
+    <Compile Include="Converters\OrganizeButtonController.cs" />
+    <Compile Include="Converters\StringToBoolConverter.cs" />
     <Compile Include="Extensions\DIrectoryInfoExtensions.cs" />
     <Compile Include="Models\OrganizeOrder.cs" />
     <Compile Include="Windows\FileOrderHelpWindow.xaml.cs">

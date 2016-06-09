@@ -7,6 +7,9 @@
         <vc:ListSelectedToBool x:Key="ListSelectedToBoolConverter"></vc:ListSelectedToBool>
         <vc:ComboBoxAndButtonTooltipMultiValueConverter x:Key="ComboBoxAndButtonTooltipMultiValueConverter"></vc:ComboBoxAndButtonTooltipMultiValueConverter>
         <vc:IntToBoolConverter x:Key="IntToBoolConverter"></vc:IntToBoolConverter>
+        <vc:BoolToColorConverter x:Key="BoolToColorConverter"></vc:BoolToColorConverter>
+        <vc:StringToBoolConverter x:Key="StringToBoolConverter"></vc:StringToBoolConverter>
+        <vc:OrganizeButtonController x:Key="OrganizeButtonController"></vc:OrganizeButtonController>
     </Window.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid Margin="5,10,0,0">
@@ -15,7 +18,7 @@
                     <Label FontWeight="Bold" >Locations</Label>
                     <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
                         <Label>Source Locations</Label>
-                        <ComboBox Name="SourceLocationsComboBox" ToolTip="Folders For Get media FIles From" Margin="5,0,0,0" Width="339" BorderBrush="#FF1286F1" BorderThickness="2,1,1,1"></ComboBox>
+                        <ComboBox Name="SourceLocationsComboBox" ToolTip="Folders For Get media FIles From" Margin="5,0,0,0" Width="339" BorderBrush="{Binding Tag, Converter={StaticResource BoolToColorConverter}, RelativeSource={RelativeSource Self}}" BorderThickness="2,1,1,1" Tag="{Binding Items.Count, Converter={StaticResource IntToBoolConverter}, Mode=OneWay, RelativeSource={RelativeSource Self}}"></ComboBox>
                         <Button Name="AddSourceFolderButton" Click="OnAddNewSourceFolderButtonClick" Margin="5,0,0,0" ToolTip="Add New Location">Add</Button>
                         <Button Content="Remove" Margin="5,0,0,0"  IsEnabled="{Binding SelectedIndex, Converter={StaticResource ListSelectedToBoolConverter}, ElementName=SourceLocationsComboBox}" Click="OnRemoveSelectedSourceFolderButtonClick">
                             <Button.ToolTip>
@@ -29,25 +32,25 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="10,5,0,0">
                         <Label>Destination</Label>
-                        <TextBox Name="DestinationTextBox" Margin="35,0,0,0" Width="339" BorderBrush="#FF1286F1" BorderThickness="2,1,1,1" ToolTip="The Destination Folder"></TextBox>
+                        <TextBox Name="DestinationTextBox" Margin="35,0,0,0" Width="339" BorderBrush="{Binding Tag, Converter={StaticResource BoolToColorConverter}, RelativeSource={RelativeSource Self}}" BorderThickness="2,1,1,1" ToolTip="The Destination Folder" Tag="{Binding Text, Converter={StaticResource StringToBoolConverter}, RelativeSource={RelativeSource Self}}"></TextBox>
                         <Button Name="DestinationBrowseButton" Click="OnDestinationBrowseButtonClick" Margin="5,0,0,0" ToolTip="Select The Destination Location">Browse</Button>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel  Margin="10,5,0,0" >
                     <Label FontWeight="Bold">File Types</Label>
                     <StackPanel Orientation="Horizontal" Margin="10,5,0,0">
-                        <CheckBox Name="Mp3CheckBox" Content="mp3" IsChecked="True"></CheckBox>
-                        <CheckBox Name="M4ACheckBox" Content="m4a" Margin="10,0,0,0"></CheckBox>
-                        <CheckBox Name="AacCheckBox" Content="aac" Margin="10,0,0,0"></CheckBox>
-                        <CheckBox Name="FalcCheckBox" Content="falc" Margin="10,0,0,0"></CheckBox>
-                        <CheckBox Name="OggCheckBox" Content="ogg" Margin="10,0,0,0"></CheckBox>
-                        <CheckBox Name="WmaCheckBox" Content="wma" Margin="10,0,0,0"></CheckBox>
+                        <CheckBox Name="Mp3CheckBox" Content="mp3" IsEnabled="{Binding Tag, Converter={StaticResource IntToBoolConverter}, RelativeSource={RelativeSource Self}}"/>
+                        <CheckBox Name="M4ACheckBox" Content="m4a" IsEnabled="{Binding Tag, Converter={StaticResource IntToBoolConverter}, RelativeSource={RelativeSource Self}}" Margin="10,0,0,0"></CheckBox>
+                        <CheckBox Name="AacCheckBox" Content="aac" IsEnabled="{Binding Tag, Converter={StaticResource IntToBoolConverter}, RelativeSource={RelativeSource Self}}" Margin="10,0,0,0"></CheckBox>
+                        <CheckBox Name="FalcCheckBox" Content="falc" IsEnabled="{Binding Tag, Converter={StaticResource IntToBoolConverter}, RelativeSource={RelativeSource Self}}" Margin="10,0,0,0"></CheckBox>
+                        <CheckBox Name="OggCheckBox" Content="ogg" IsEnabled="{Binding Tag, Converter={StaticResource IntToBoolConverter}, RelativeSource={RelativeSource Self}}" Margin="10,0,0,0"></CheckBox>
+                        <CheckBox Name="WmaCheckBox" Content="wma" IsEnabled="{Binding Tag, Converter={StaticResource IntToBoolConverter}, RelativeSource={RelativeSource Self}}" Margin="10,0,0,0"></CheckBox>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Margin="10,5,0,0">
                     <Label FontWeight="Bold">File Order</Label>
                     <StackPanel Orientation="Horizontal" Margin="10,0,0,0" >
-                        <TextBox Name="OrderTextBox" BorderBrush="#FF1286F1" BorderThickness="2,1,1,1" Margin="0,0,5,0" Width="533" TextChanged="OnOrderTextBoxTextChanged" ToolTip="Enter the Order of the files you want in this input box (click help button for more informations)"></TextBox>
+                        <TextBox Name="OrderTextBox" BorderBrush="{Binding Tag, Converter={StaticResource BoolToColorConverter}, RelativeSource={RelativeSource Self}}" BorderThickness="2,1,1,1" Margin="0,0,5,0" Width="533" TextChanged="OnOrderTextBoxTextChanged" ToolTip="Enter the Order of the files you want in this input box (click help button for more informations)" Tag=""></TextBox>
                         <Image Name="FileOrderHelpImage" Source="help.png" Height="26" Width="36" PreviewMouseDown="OnFileOrderHelpImagePreviewMouseDown" />
                     </StackPanel>
                     <StackPanel Margin="20,5,0,0" >
@@ -56,8 +59,16 @@
                 </StackPanel>
                 <StackPanel Margin="0,10,0,0">
                     <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
-                        <Button x:Name="OrganizeButton"  Margin="10,0,0,0" Height="29" Click="OnOrganizeButtonClick" Content="Organize"/>
-                        <Button x:Name="ExitButton" Margin="10,0,0,0" Width="57" Click="OnExitButtonClick" >Exit</Button>
+                        <Button x:Name="OrganizeButton"  Margin="10,0,0,0" Height="29" Click="OnOrganizeButtonClick" Content="Organize" >
+                            <Button.IsEnabled>
+                                <MultiBinding Converter="{StaticResource OrganizeButtonController}">
+                                    <Binding ElementName="SourceLocationsComboBox" Path="Tag"></Binding>
+                                    <Binding ElementName="DestinationTextBox" Path="Tag"></Binding>
+                                    <Binding ElementName="OrderTextBox" Path="Tag"></Binding>
+                                </MultiBinding>
+                            </Button.IsEnabled>
+                        </Button>
+                        <Button x:Name="ExitButton" Margin="10,0,0,0" Width="57" Click="OnExitButtonClick" IsCancel="True" >Exit</Button>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
