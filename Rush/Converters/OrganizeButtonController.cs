@@ -1,26 +1,14 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Data;
 
 namespace Rush.Converters
 {
-    public class OrganizeButtonController :IMultiValueConverter
+    public class OrganizeButtonConverter :IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (values.Length < 1)
-                return false;
-            var res = false;
-            foreach (var val in values)
-            {
-                if (val is bool)
-                    res = (bool)val;
-                else
-                {
-                    res = false;
-                }
-            }
-
-            return res;
+            return values.Length >= 1 && values.All(val => (bool) val);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)

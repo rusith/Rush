@@ -53,3 +53,9 @@ F:\Projects\Rush\Rush\obj\Debug\Rush.Properties.Resources.resources
 F:\Projects\Rush\Rush\obj\Debug\Rush.csproj.GenerateResource.Cache
 F:\Projects\Rush\Rush\obj\Debug\Rush.exe
 F:\Projects\Rush\Rush\obj\Debug\Rush.pdb
+F:\Projects\Rush\Rush\bin\Debug\PresentationFramework.Luna.dll
+F:\Projects\Rush\Rush\bin\Debug\MahApps.Metro.dll
+F:\Projects\Rush\Rush\bin\Debug\System.Windows.Interactivity.dll
+F:\Projects\Rush\Rush\bin\Debug\MahApps.Metro.pdb
+F:\Projects\Rush\Rush\bin\Debug\MahApps.Metro.xml
+F:\Projects\Rush\Rush\obj\Debug\Rush.csprojResolveAssemblyReference.cache
