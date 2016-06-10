@@ -15,30 +15,31 @@ namespace Rush.Models
 
     public class OrganizeOrder
     {
-        private readonly List<OrderElement> _order=new List<OrderElement>();
+        public List<OrderElement> Order { get; } = new List<OrderElement>();
+
 
         public bool AddElement(OrderElement elemet)
         {
-            if(elemet==OrderElement.File && _order.Contains(OrderElement.File))
+            if(elemet==OrderElement.File && Order.Contains(OrderElement.File))
                 return false;
-            if(_order.Any() && elemet==_order.Last())
+            if(Order.Any() && elemet==Order.Last())
                 return false;
-            _order.Add(elemet);
+            Order.Add(elemet);
             return true;
         }
 
         public new string ToString()
         {
-            if (_order.Count<1) return "";
+            if (Order.Count<1) return "";
             var text = "";
-            for (var i = 0; i < _order.Count; i++)
-                text = text + (i > 0 ? " --> " : "") + ElemetToString( _order[i]);
+            for (var i = 0; i < Order.Count; i++)
+                text = text + (i > 0 ? " → " : "") + ElemetToString( Order[i]);
             return text;
         }
 
         public string ToOrderString()
         {
-            return _order.Count < 1 ? "" : _order.Aggregate("", (current, item) => current + string.Format("<{0}>", ElemetToString(item)));
+            return Order.Count < 1 ? "" : Order.Aggregate("", (current, item) => current + string.Format("<{0}>", ElemetToString(item)));
         }
 
 
@@ -63,7 +64,7 @@ namespace Rush.Models
 
         public bool IsEmpty()
         {
-            return _order.Count<1;
+            return Order.Count<1;
         }
 
     }

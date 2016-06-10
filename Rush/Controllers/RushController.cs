@@ -1,12 +1,6 @@
-<<<<<<< HEAD
-﻿using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using Rush.Models;
-=======
-﻿using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
->>>>>>> c1cfeda0003f2346aec2d59994258fd462b85936
+using Rush.Models;
 using Rush.Windows;
 
 namespace Rush.Controllers
