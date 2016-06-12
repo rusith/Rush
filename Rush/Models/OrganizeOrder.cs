@@ -17,6 +17,7 @@ namespace Rush.Models
     {
         public List<OrderElement> Order { get; } = new List<OrderElement>();
 
+        public FileNameTemplate FileNameTemplate { get; set; }=new FileNameTemplate();
 
         public bool AddElement(OrderElement elemet)
         {
@@ -37,11 +38,6 @@ namespace Rush.Models
             return text;
         }
 
-        public string ToOrderString()
-        {
-            return Order.Count < 1 ? "" : Order.Aggregate("", (current, item) => current + string.Format("<{0}>", ElemetToString(item)));
-        }
-
 
         public string ElemetToString(OrderElement element)
         {
@@ -52,7 +48,7 @@ namespace Rush.Models
                 case OrderElement.Artist:
                     return "Artist";
                 case OrderElement.File:
-                    return "File";
+                    return string.Format("<{0}>.<ext>",FileNameTemplate);
                 case OrderElement.Genre:
                     return "Genre";
                 case OrderElement.Year:

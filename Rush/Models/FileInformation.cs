@@ -14,6 +14,10 @@ namespace Rush.Models
             return Equals(SourceFile, other.SourceFile) && Equals(DestinationFile, other.DestinationFile);
         }
 
+        public bool IsDuplicate { get; set; }
+
+        public FileInformation Duplicate { get; set; }
+
         public override int GetHashCode()
         {
             unchecked
@@ -29,8 +33,7 @@ namespace Rush.Models
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((FileInformation) obj);
+            return obj.GetType() == GetType() && Equals((FileInformation) obj);
         }
     }
 }

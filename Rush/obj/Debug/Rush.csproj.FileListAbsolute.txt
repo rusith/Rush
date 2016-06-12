@@ -36,11 +36,9 @@ D:\rusith\Projects\Rush\Rush\obj\Debug\Windows\ProcessWindow.baml
 D:\rusith\Projects\Rush\Rush\obj\Debug\Windows\ProcessWindow.g.cs
 F:\Projects\Rush\Rush\obj\Debug\Rush.csprojResolveAssemblyReference.cache
 F:\Projects\Rush\Rush\obj\Debug\Windows\FileOrderHelpWindow.baml
-F:\Projects\Rush\Rush\obj\Debug\Windows\ProcessWindow.baml
 F:\Projects\Rush\Rush\obj\Debug\App.baml
 F:\Projects\Rush\Rush\obj\Debug\Windows\FileOrderHelpWindow.g.cs
 F:\Projects\Rush\Rush\obj\Debug\Windows\MainWindow.g.cs
-F:\Projects\Rush\Rush\obj\Debug\Windows\ProcessWindow.g.cs
 F:\Projects\Rush\Rush\obj\Debug\App.g.cs
 F:\Projects\Rush\Rush\obj\Debug\GeneratedInternalTypeHelper.g.cs
 F:\Projects\Rush\Rush\obj\Debug\Rush_MarkupCompile.cache
@@ -61,3 +59,5 @@ F:\Projects\Rush\Rush\obj\Debug\Rush.Properties.Resources.resources
 F:\Projects\Rush\Rush\obj\Debug\Rush.csproj.GenerateResource.Cache
 F:\Projects\Rush\Rush\obj\Debug\Rush.exe
 F:\Projects\Rush\Rush\obj\Debug\Rush.pdb
+F:\Projects\Rush\Rush\obj\Debug\Windows\DuplicatesWindow.g.cs
+F:\Projects\Rush\Rush\obj\Debug\Windows\DuplicatesWindow.baml

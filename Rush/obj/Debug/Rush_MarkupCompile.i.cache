@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 F:\Projects\Rush\Rush\App.xaml
-2465955118
+3-903458636
 
-211040821492
+27-813593216
 171352576710
-Windows\FileOrderHelpWindow.xaml;Windows\MainWindow.xaml;
+Windows\DuplicatesWindow.xaml;Windows\FileOrderHelpWindow.xaml;Windows\MainWindow.xaml;
 
-True
+False
 
