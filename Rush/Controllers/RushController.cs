@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Rush.Models;
 using Rush.Windows;
 
@@ -11,11 +10,11 @@ namespace Rush.Controllers
 
         #region Fields
 
-        private readonly MainWindow _mainWindow = null;
+        private readonly MainWindow _mainWindow ;
 
         #endregion
 
-        #region Properies
+        #region Properties
 
         public HashSet<string> Sources { get; set; }
         public string Destination { get; set; }

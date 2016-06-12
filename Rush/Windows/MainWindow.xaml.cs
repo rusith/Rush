@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -13,12 +12,10 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Threading;
 using MahApps.Metro.Controls.Dialogs;
 using Rush.Controllers;
 using Rush.Extensions;
 using Rush.Models;
-using MahApps.Metro.Controls;
 using Rush.Converters;
 using WinForms =System.Windows.Forms;
 
@@ -58,7 +55,7 @@ namespace Rush.Windows
             {
                 var folderDialog = new WinForms.FolderBrowserDialog
                 {
-                    Description = "select a new source folder to add source locations list"
+                    Description = @"select a new source folder to add source locations list"
                 };
                 var folderDialogResult = folderDialog.ShowDialog();
                 if (folderDialogResult != System.Windows.Forms.DialogResult.OK) break;
@@ -108,7 +105,7 @@ namespace Rush.Windows
             {
                 var folderDialog = new WinForms.FolderBrowserDialog
                 {
-                    Description = "Select Folder to use as destination location"
+                    Description = @"Select Folder to use as destination location"
                 };
                 if (folderDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) break;
                 var directory = new DirectoryInfo(folderDialog.SelectedPath);
@@ -194,9 +191,8 @@ namespace Rush.Windows
                         if (matches.Count > 0)
                         {
                             var fileName=new FileNameTemplate();
-                            foreach (Match tem in matches)
+                            foreach (var contentm in from Match tem in matches select tem.Value.Replace("]", "").Replace("[", ""))
                             {
-                                var contentm = tem.Value.Replace("]", "").Replace("[", "");
                                 if (contentm.StartsWith("\"") && contentm.EndsWith("\""))
                                 {
                                     fileName.AddLiterel(contentm.Replace("\"",""));
@@ -367,6 +363,7 @@ namespace Rush.Windows
             WmaCheckBox.Tag = _wmaCount;
         }
 
+        // ReSharper disable once FunctionComplexityOverflow
         private void Organize()
         {
             OrganizeButton.IsEnabled = false;
@@ -462,7 +459,6 @@ namespace Rush.Windows
                     {
                         TitleLabel.Content = "Processing Files";
                     });
-                   // TitleLabel.Content = "Processing Files";
                     int[] fileIndex = { 0 };
                     _duplicates = new ObservableCollection<FileInformation>();
                     var duplicateContentBinding = new Binding("Count")
@@ -472,7 +468,7 @@ namespace Rush.Windows
                     };
                     DuplicatesLabel.Dispatcher.Invoke(() =>
                     {
-                        BindingOperations.SetBinding(DuplicatesLabel, Label.ContentProperty, duplicateContentBinding);
+                        BindingOperations.SetBinding(DuplicatesLabel, ContentProperty, duplicateContentBinding);
                         DuplicatesLabel.Tag = _duplicates;
                     });
                     foreach (var file in files)
@@ -505,102 +501,94 @@ namespace Rush.Windows
                         var newfile = destination.FullName;
                         foreach (var tag in _order.Order)
                         {
-                            if (tag == OrderElement.Album)
+                            switch (tag)
                             {
-                                var album = taginfo.Tag.Album;
-                                if (string.IsNullOrWhiteSpace(album))
-                                    album = "UnknownAlbum";
-                                newfile = Path.Combine(newfile, album.ToSafeFileName());
-                            }
-                            if (tag == OrderElement.Artist)
-                            {
-                                var artist = "UnknownArtist";
-                                if (taginfo.Tag.Performers != null && taginfo.Tag.Performers.Length > 0 && taginfo.Tag.Performers.All(c => c.Length > 0))
-                                    artist = taginfo.Tag.Performers.Aggregate((c, n) => c + " & " + n).TrimEnd('&');
-                                newfile = Path.Combine(newfile, artist.ToSafeFileName());
-                            }
-                            if (tag == OrderElement.Genre)
-                            {
-                                var genre = "UnknownGenre";
-                                if (taginfo.Tag.Genres != null && taginfo.Tag.Genres.Length > 0 && taginfo.Tag.Genres.All(c => c.Length > 0))
-                                    genre = taginfo.Tag.Genres.Aggregate((c, n) => c + " & " + n).TrimEnd('&');
-                                newfile = Path.Combine(newfile, genre.ToSafeFileName());
-                            }
-                            if (tag == OrderElement.Year)
-                            {
-                                var year = "UnknownYear";
-                                if (taginfo.Tag.Year > 0)
-                                    year = taginfo.Tag.Year.ToString();
-                                newfile = Path.Combine(newfile, year);
-                            }
-
-                            if (tag == OrderElement.File)
-                            {
-                                if (_order.FileNameTemplate.Template.Count > 0)
-                                {
-                                    var fn = "";
-                                    var litindex = 0;
-                                    foreach (var f in _order.FileNameTemplate.Template)
+                                case OrderElement.Album:
+                                    var alb = taginfo.Tag.Album;
+                                    if (string.IsNullOrWhiteSpace(alb))
+                                        alb = "UnknownAlbum";
+                                    newfile = Path.Combine(newfile, alb.ToSafeFileName());
+                                    break;
+                                case OrderElement.Artist:
+                                    var art = "UnknownArtist";
+                                    if (taginfo.Tag.Performers != null && taginfo.Tag.Performers.Length > 0 && taginfo.Tag.Performers.All(c => c.Length > 0))
+                                        art = taginfo.Tag.Performers.Aggregate((c, n) => c + " & " + n).TrimEnd('&');
+                                    newfile = Path.Combine(newfile, art.ToSafeFileName());
+                                    break;
+                                case OrderElement.Genre:
+                                    var genre = "UnknownGenre";
+                                    if (taginfo.Tag.Genres != null && taginfo.Tag.Genres.Length > 0 && taginfo.Tag.Genres.All(c => c.Length > 0))
+                                        genre = taginfo.Tag.Genres.Aggregate((c, n) => c + " & " + n).TrimEnd('&');
+                                    newfile = Path.Combine(newfile, genre.ToSafeFileName());
+                                    break;
+                                case OrderElement.Year:
+                                    var year = "UnknownYear";
+                                    if (taginfo.Tag.Year > 0)
+                                        year = taginfo.Tag.Year.ToString();
+                                    newfile = Path.Combine(newfile, year);
+                                    break;
+                                case OrderElement.File:
+                                    if (_order.FileNameTemplate.Template.Count > 0)
                                     {
-                                        if (f == FileNameItem.Album)
+                                        var fn = "";
+                                        var litindex = 0;
+                                        foreach (var f in _order.FileNameTemplate.Template)
                                         {
-                                            var album = taginfo.Tag.Album;
-                                            if (string.IsNullOrWhiteSpace(album))
-                                                album = "";
-                                            else
-                                                fn += album;
-                                        }
-                                        else if (f == FileNameItem.Artist)
-                                        {
-                                            var artist = "";
-                                            if (taginfo.Tag.Performers != null && taginfo.Tag.Performers.Length > 0 && taginfo.Tag.Performers.All(c => c.Length > 0))
-                                                artist = taginfo.Tag.Performers.Aggregate((c, n) => c + " & " + n).TrimEnd('&');
-                                            if (string.IsNullOrWhiteSpace(artist))
-                                                artist = "";
-                                            else
-                                                fn += artist;
-                                        }
-                                        else if (f == FileNameItem.Count)
-                                        {
-                                            var count = files.Where(v=>v.DestinationFile!=null).Count(v => v.DestinationFile.DirectoryName == newfile)+1;
-                                            fn += count.ToString();
-                                        }
-                                        else if (f == FileNameItem.Literel)
-                                        {
-                                            var lit=
-                                            _order.FileNameTemplate.Literel[litindex];
-                                            litindex++;
-                                            if (string.IsNullOrWhiteSpace(lit))
-                                                fn += "";
-                                            else
-                                                fn += lit;
-                                        }
-                                        else if (f == FileNameItem.Title)
-                                        {
-                                            var title = taginfo.Tag.Title;
-                                            if (string.IsNullOrWhiteSpace(title))
-                                                title = "";
-                                            fn += title;
-                                        }
-                                        else if (f == FileNameItem.Trak)
-                                        {
-                                            var track = taginfo.Tag.Track;
-                                            if (track < 1)
-                                                fn += "";
-                                            else
-                                                fn += track.ToString();
-                                        }
+                                            switch (f)
+                                            {
+                                                case FileNameItem.Album:
+                                                    var album = taginfo.Tag.Album;
+                                                    if (string.IsNullOrWhiteSpace(album))
+                                                        album = "";
+                                                    fn += album;
+                                                    break;
+                                                case FileNameItem.Artist:
+                                                    var artist = "";
+                                                    if (taginfo.Tag.Performers != null && taginfo.Tag.Performers.Length > 0 && taginfo.Tag.Performers.All(c => c.Length > 0))
+                                                        artist = taginfo.Tag.Performers.Aggregate((c, n) => c + " & " + n).TrimEnd('&');
+                                                    if (string.IsNullOrWhiteSpace(artist))
+                                                        artist = "";
+                                                
+                                                    fn += artist;
+                                                    break;
+                                                case FileNameItem.Count:
+                                                    var count = files.Where(v=>v.DestinationFile!=null).Count(v => v.DestinationFile.DirectoryName == newfile)+1;
+                                                    fn += count.ToString();
+                                                    break;
+                                                case FileNameItem.Literel:
+                                                    var lit=
+                                                        _order.FileNameTemplate.Literel[litindex];
+                                                    litindex++;
+                                                    if (string.IsNullOrWhiteSpace(lit))
+                                                        fn += "";
+                                                    else
+                                                        fn += lit;
+                                                    break;
+                                                case FileNameItem.Title:
+                                                    var title = taginfo.Tag.Title;
+                                                    if (string.IsNullOrWhiteSpace(title))
+                                                        title = "";
+                                                    fn += title;
+                                                    break;
+                                                case FileNameItem.Trak:
+                                                    var track = taginfo.Tag.Track;
+                                                    if (track < 1)
+                                                        fn += "";
+                                                    else
+                                                        fn += track.ToString();
+                                                    break;
+                                            }
 
+                                        }
+                                        fn += file1.Extension;
+                                        newfile = Path.Combine(newfile, fn.ToSafeFileName());
                                     }
-                                    fn += file1.Extension;
-                                    newfile = Path.Combine(newfile, fn.ToSafeFileName());
-                                }
-                                else
-                                {
-                                    var fileName = file1.Name;
-                                    newfile = Path.Combine(newfile, fileName.ToSafeFileName());
-                                }
-                                
+                                    else
+                                    {
+                                        var fileName = file1.Name;
+                                        newfile = Path.Combine(newfile, fileName.ToSafeFileName());
+                                    }
+                                    break;
                             }
                         }
                         try
@@ -672,7 +660,7 @@ namespace Rush.Windows
                         progressStack.Visibility = Visibility.Collapsed;
                     });
 
-                    var coll = FindResource("WindowCollapse") as Storyboard;
+                   // var coll = FindResource("WindowCollapse") as Storyboard;
                     Dispatcher.Invoke(() =>
                     {
                         Height = 317;
@@ -723,23 +711,27 @@ namespace Rush.Windows
 
         private async void OnExitButtonClick(object sender, RoutedEventArgs e)
         {
-            if ((string) ExitButton.Content == "Exit")
+            switch ((string) ExitButton.Content)
             {
-                var result = await this.ShowMessageAsync("confirm exit", "Are you sure ? do you want to exit", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" });
-                if (result == MessageDialogResult.Affirmative)
-                    System.Windows.Application.Current.Shutdown();
-            }
-            else if ((string) ExitButton.Content == "Cancel")
-            {
-                var result = await this.ShowMessageAsync("confirm cancel", "Are you sure ? do you want to cancel current operation?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" });
-                if (result == MessageDialogResult.Affirmative)
+                case "Exit":
                 {
-                    _operationCancellationToken.Cancel();
-                    var animation = FindResource("WindowCollapse") as Storyboard;
-                    animation?.Begin();
+                    var result = await this.ShowMessageAsync("confirm exit", "Are you sure ? do you want to exit", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" });
+                    if (result == MessageDialogResult.Affirmative)
+                        Application.Current.Shutdown();
                 }
+                    break;
+                case "Cancel":
+                {
+                    var result = await this.ShowMessageAsync("confirm cancel", "Are you sure ? do you want to cancel current operation?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" });
+                    if (result == MessageDialogResult.Affirmative)
+                    {
+                        _operationCancellationToken.Cancel();
+                        var animation = FindResource("WindowCollapse") as Storyboard;
+                        animation?.Begin();
+                    }
+                }
+                    break;
             }
-
         }
 
         private void OnDuplicatesLabelClick(object sender, System.Windows.Input.MouseButtonEventArgs e)

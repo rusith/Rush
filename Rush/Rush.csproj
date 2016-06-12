@@ -74,9 +74,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Controllers\FileTypesInfo.cs" />
     <Compile Include="Controllers\RushController.cs" />
-    <Compile Include="Controllers\RushFileProcessor.cs" />
     <Compile Include="Converters\BoolToColorConverter.cs" />
     <Compile Include="Converters\ComboBoxAndButtonTooltipMultiValueConverter.cs" />
     <Compile Include="Converters\CountToDuplicateConverter.cs" />
