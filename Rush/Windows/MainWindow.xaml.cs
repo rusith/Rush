@@ -367,14 +367,14 @@ namespace Rush.Windows
             WmaCheckBox.Tag = _wmaCount;
         }
 
-        private async void Organize()
+        private void Organize()
         {
             OrganizeButton.IsEnabled = false;
             ExitButton.Content = "Cancel";
 
             if (_fileCount < 1)
             {
-                await this.ShowMessageAsync("No Files", "No files present to organize in the selected folders.\nplease select another location that have supported file types ", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
+                this.ShowMessageAsync("No Files", "No files present to organize in the selected folders.\nplease select another location that have supported file types ", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
                 OrganizeButton.IsEnabled = true;
                 ExitButton.Content = "Exit";
                 return;
@@ -382,7 +382,7 @@ namespace Rush.Windows
             if (Mp3CheckBox.IsChecked == false && M4ACheckBox.IsChecked == false && AacCheckBox.IsChecked == false &&
                 FalcCheckBox.IsChecked == false && OggCheckBox.IsChecked == false && WmaCheckBox.IsChecked == false)
             {
-                await this.ShowMessageAsync("File types not selected", "File types not selected.\nyou should select at least one file type to continue", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
+                this.ShowMessageAsync("File types not selected", "File types not selected.\nyou should select at least one file type to continue", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
                 OrganizeButton.IsEnabled = true;
                 ExitButton.Content = "Exit";
                 return;
@@ -390,7 +390,7 @@ namespace Rush.Windows
 
             if (_order.Order.Count > 0)
             {
-                await this.ShowMessageAsync("Be careful!", "you are going to change the file name template . be careful. because if you set a more generic type name template some files (maybe most) will lose.add count variable to make sure all files in the folder have deferent file names.", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
+                this.ShowMessageAsync("Be careful!", "you are going to change the file name template . be careful. because if you set a more generic type name template some files (maybe most) will lose.add count variable to make sure all files in the folder have deferent file names.", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
                
             }
 
@@ -447,7 +447,7 @@ namespace Rush.Windows
             progressStack.Visibility = Visibility.Visible;
 
             var overwrite = OverwriteExistingCheckBox.IsChecked.GetValueOrDefault();
-            await Task.Factory.StartNew(() =>
+            Task.Factory.StartNew(() =>
             {
                 try
                 {
@@ -462,7 +462,7 @@ namespace Rush.Windows
                     {
                         TitleLabel.Content = "Processing Files";
                     });
-
+                   // TitleLabel.Content = "Processing Files";
                     int[] fileIndex = { 0 };
                     _duplicates = new ObservableCollection<FileInformation>();
                     var duplicateContentBinding = new Binding("Count")
