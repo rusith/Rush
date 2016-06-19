@@ -404,8 +404,6 @@ namespace Rush.Windows
                 return;
             }
             
-
-            var fileMode = CopyRadioButton.IsChecked.GetValueOrDefault();
             var fileTypes = new List<string>();
             if(Mp3CheckBox.IsChecked.GetValueOrDefault())
                 fileTypes.Add("mp3");
@@ -600,13 +598,12 @@ namespace Rush.Windows
                             newfile = Path.Combine(destination.FullName, "PathTooLong", file1.Name);
                             file.DestinationFile = new FileInfo(newfile);
                         }
-
                         fileIndex[0] = fileIndex[0] + 1;
                     }
 
                     TitleLabel.Dispatcher.Invoke(() =>
                     {
-                        TitleLabel.Content = string.Format("{0}  Files", fileMode ? "Copying" : "Moving");
+                        TitleLabel.Content = "Copying  Files";
                     });
 
 
@@ -636,12 +633,9 @@ namespace Rush.Windows
                             File.SetAttributes(file.DestinationFile.FullName, FileAttributes.Normal);
                             file.DestinationFile.Delete();
                         }
-                        if (fileMode)
-                            File.Copy(file.SourceFile.FullName, file.DestinationFile.FullName, true);
-                        else
-                        {
-                            File.Move(file.SourceFile.FullName, file.DestinationFile.FullName);
-                        }
+                        
+                        File.Copy(file.SourceFile.FullName, file.DestinationFile.FullName, true);
+                        
                     }
                 }
                 finally
@@ -661,10 +655,10 @@ namespace Rush.Windows
                     });
 
                    // var coll = FindResource("WindowCollapse") as Storyboard;
-                    Dispatcher.Invoke(() =>
-                    {
-                        Height = 317;
-                    });
+                    //Dispatcher.Invoke(() =>
+                    //{
+                    //    Height = 317;
+                    //});
 
                 }
             }, _operationCancellationToken.Token);
