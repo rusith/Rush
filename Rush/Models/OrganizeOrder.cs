@@ -19,8 +19,10 @@ namespace Rush.Models
 
         public FileNameTemplate FileNameTemplate { get; set; }=new FileNameTemplate();
 
+
         public bool AddElement(OrderElement elemet)
         {
+
             if(elemet==OrderElement.File && Order.Contains(OrderElement.File))
                 return false;
             if(Order.Any() && elemet==Order.Last())

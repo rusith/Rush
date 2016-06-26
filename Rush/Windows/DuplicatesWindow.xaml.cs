@@ -19,7 +19,7 @@ namespace Rush.Windows
 
         private void SetupTreeView()
         {
-            var dupis = _files.Select(fi => fi.Duplicate).ToList().Distinct().ToList();
+            var dupis = _files.Select(fi => fi.Duplicate).Distinct().ToList().ToList();
             var res = dupis.GroupBy(d => d.SourceFile.Name).ToList();
             foreach (var g in res)
             {

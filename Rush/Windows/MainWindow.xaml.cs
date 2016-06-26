@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -35,6 +36,8 @@ namespace Rush.Windows
         private int _wmaCount;
         private OrganizeOrder _order;
         private ObservableCollection<FileInformation> _duplicates;
+        private ObservableCollection<string> _pathTooLong = null;
+        private string _pathTooLongLocation = string.Empty;  
         private CancellationTokenSource _operationCancellationToken=new CancellationTokenSource();
 
         public MainWindow(RushController controller)
@@ -364,14 +367,14 @@ namespace Rush.Windows
         }
 
         // ReSharper disable once FunctionComplexityOverflow
-        private void Organize()
+        private async void Organize()
         {
             OrganizeButton.IsEnabled = false;
             ExitButton.Content = "Cancel";
 
             if (_fileCount < 1)
             {
-                this.ShowMessageAsync("No Files", "No files present to organize in the selected folders.\nplease select another location that have supported file types ", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
+                await this.ShowMessageAsync("No Files", "No files present to organize in the selected folders.\nplease select another location that have supported file types ", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
                 OrganizeButton.IsEnabled = true;
                 ExitButton.Content = "Exit";
                 return;
@@ -379,15 +382,15 @@ namespace Rush.Windows
             if (Mp3CheckBox.IsChecked == false && M4ACheckBox.IsChecked == false && AacCheckBox.IsChecked == false &&
                 FalcCheckBox.IsChecked == false && OggCheckBox.IsChecked == false && WmaCheckBox.IsChecked == false)
             {
-                this.ShowMessageAsync("File types not selected", "File types not selected.\nyou should select at least one file type to continue", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
+                await this.ShowMessageAsync("File types not selected", "File types not selected.\nyou should select at least one file type to continue", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
                 OrganizeButton.IsEnabled = true;
                 ExitButton.Content = "Exit";
                 return;
             }
 
-            if (_order.Order.Count > 0)
+            if (_order.FileNameTemplate.Template != null && _order.FileNameTemplate.Template.Count > 0)
             {
-                this.ShowMessageAsync("Be careful!", "you are going to change the file name template . be careful. because if you set a more generic type name template some files (maybe most) will lose.add count variable to make sure all files in the folder have deferent file names.", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
+                await this.ShowMessageAsync("Be careful!", "you are going to change the file name template . be careful. because if you set a more generic type name template some files (maybe most) will lose.add count variable to make sure all files in the folder have deferent file names.", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
                
             }
 
@@ -442,7 +445,7 @@ namespace Rush.Windows
             progressStack.Visibility = Visibility.Visible;
 
             var overwrite = OverwriteExistingCheckBox.IsChecked.GetValueOrDefault();
-            Task.Factory.StartNew(() =>
+            await Task.Factory.StartNew(() =>
             {
                 try
                 {
@@ -457,7 +460,7 @@ namespace Rush.Windows
                     {
                         TitleLabel.Content = "Processing Files";
                     });
-                    int[] fileIndex = { 0 };
+                    int[] fileIndex = {0};
                     _duplicates = new ObservableCollection<FileInformation>();
                     var duplicateContentBinding = new Binding("Count")
                     {
@@ -477,8 +480,11 @@ namespace Rush.Windows
                         }
                         var file1 = file.SourceFile;
                         var file2 = file;
-                        foreach (var f in files.Where(f => !f.Equals(file2) && !f.IsDuplicate).Where(f => f.SourceFile.Name == file2.SourceFile.Name &&
-                                                                                                          f.SourceFile.Length == file2.SourceFile.Length))
+                        foreach (
+                            var f in
+                                files.Where(f => !f.Equals(file2) && !f.IsDuplicate)
+                                    .Where(f => f.SourceFile.Name == file2.SourceFile.Name &&
+                                                f.SourceFile.Length == file2.SourceFile.Length))
                         {
                             f.IsDuplicate = true;
                             f.Duplicate = file;
@@ -509,13 +515,15 @@ namespace Rush.Windows
                                     break;
                                 case OrderElement.Artist:
                                     var art = "UnknownArtist";
-                                    if (taginfo.Tag.Performers != null && taginfo.Tag.Performers.Length > 0 && taginfo.Tag.Performers.All(c => c.Length > 0))
+                                    if (taginfo.Tag.Performers != null && taginfo.Tag.Performers.Length > 0 &&
+                                        taginfo.Tag.Performers.All(c => c.Length > 0))
                                         art = taginfo.Tag.Performers.Aggregate((c, n) => c + " & " + n).TrimEnd('&');
                                     newfile = Path.Combine(newfile, art.ToSafeFileName());
                                     break;
                                 case OrderElement.Genre:
                                     var genre = "UnknownGenre";
-                                    if (taginfo.Tag.Genres != null && taginfo.Tag.Genres.Length > 0 && taginfo.Tag.Genres.All(c => c.Length > 0))
+                                    if (taginfo.Tag.Genres != null && taginfo.Tag.Genres.Length > 0 &&
+                                        taginfo.Tag.Genres.All(c => c.Length > 0))
                                         genre = taginfo.Tag.Genres.Aggregate((c, n) => c + " & " + n).TrimEnd('&');
                                     newfile = Path.Combine(newfile, genre.ToSafeFileName());
                                     break;
@@ -542,19 +550,25 @@ namespace Rush.Windows
                                                     break;
                                                 case FileNameItem.Artist:
                                                     var artist = "";
-                                                    if (taginfo.Tag.Performers != null && taginfo.Tag.Performers.Length > 0 && taginfo.Tag.Performers.All(c => c.Length > 0))
-                                                        artist = taginfo.Tag.Performers.Aggregate((c, n) => c + " & " + n).TrimEnd('&');
+                                                    if (taginfo.Tag.Performers != null &&
+                                                        taginfo.Tag.Performers.Length > 0 &&
+                                                        taginfo.Tag.Performers.All(c => c.Length > 0))
+                                                        artist =
+                                                            taginfo.Tag.Performers.Aggregate((c, n) => c + " & " + n)
+                                                                .TrimEnd('&');
                                                     if (string.IsNullOrWhiteSpace(artist))
                                                         artist = "";
-                                                
+
                                                     fn += artist;
                                                     break;
                                                 case FileNameItem.Count:
-                                                    var count = files.Where(v=>v.DestinationFile!=null).Count(v => v.DestinationFile.DirectoryName == newfile)+1;
+                                                    var count =
+                                                        files.Where(v => v.DestinationFile != null)
+                                                            .Count(v => v.DestinationFile.DirectoryName == newfile) + 1;
                                                     fn += count.ToString();
                                                     break;
                                                 case FileNameItem.Literel:
-                                                    var lit=
+                                                    var lit =
                                                         _order.FileNameTemplate.Literel[litindex];
                                                     litindex++;
                                                     if (string.IsNullOrWhiteSpace(lit))
@@ -633,35 +647,32 @@ namespace Rush.Windows
                             File.SetAttributes(file.DestinationFile.FullName, FileAttributes.Normal);
                             file.DestinationFile.Delete();
                         }
-                        
+
                         File.Copy(file.SourceFile.FullName, file.DestinationFile.FullName, true);
-                        
+
                     }
                 }
-                finally
+                catch (Exception)
                 {
-                    _operationCancellationToken = new CancellationTokenSource();
-                    OrganizeButton.Dispatcher.Invoke(() =>
-                    {
-                        OrganizeButton.IsEnabled = true;
-                    });
-                    ExitButton.Dispatcher.Invoke(() =>
-                    {
-                        ExitButton.Content = "Exit";
-                    });
-                    progressStack.Dispatcher.Invoke(() =>
-                    {
-                        progressStack.Visibility = Visibility.Collapsed;
-                    });
-
-                   // var coll = FindResource("WindowCollapse") as Storyboard;
-                    //Dispatcher.Invoke(() =>
-                    //{
-                    //    Height = 317;
-                    //});
-
+                    // ignored
                 }
             }, _operationCancellationToken.Token);
+
+            _operationCancellationToken = new CancellationTokenSource();
+            OrganizeButton.Dispatcher.Invoke(() =>
+            {
+                OrganizeButton.IsEnabled = true;
+            });
+            ExitButton.Dispatcher.Invoke(() =>
+            {
+                ExitButton.Content = "Exit";
+            });
+            progressStack.Dispatcher.Invoke(() =>
+            {
+                progressStack.Visibility = Visibility.Collapsed;
+            });
+            var coll = FindResource("WindowCollapse") as Storyboard;
+            coll?.Begin();
         }
 
         private void OnAddNewSourceFolderButtonClick(object sender, RoutedEventArgs e)
@@ -732,6 +743,12 @@ namespace Rush.Windows
         {
             var duplicateWindow = new DuplicatesWindow(ref _duplicates);
             duplicateWindow.ShowDialog();
+        }
+
+        private void OnWindowClosing(object sender, CancelEventArgs e)
+        {
+           _operationCancellationToken.Cancel();
+          
         }
     }
 }

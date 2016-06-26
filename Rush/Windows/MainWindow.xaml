@@ -2,7 +2,8 @@
         x:Class="Rush.Windows.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Rush" Height="317" Width="645" MaxWidth="645"
+        Title="Rush" Height="590.7" Width="645" MaxWidth="645"
+        Closing="OnWindowClosing"
         xmlns:vc="clr-namespace:Rush.Converters" Icon="/Rush;component/Images/logo.PNG" Background="#FFDCF7F6">
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
@@ -80,11 +81,12 @@
                         <Label Name="OrderValidationLabel" Foreground="Tomato" FontSize="11"></Label>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Visibility="Collapsed" x:Name="progressStack" Margin="20,5,10,0">
+                <StackPanel Visibility="Visible" x:Name="progressStack" Margin="20,5,10,0">
                     <StackPanel Orientation="Horizontal">
                         <Label Name="TitleLabel" FontSize="18.667" FontWeight="Bold" FontFamily="Segoe UI Symbol" Height="34" Width="330"></Label>
                         <StackPanel Orientation="Horizontal">
-                            <Label x:Name="DuplicatesLabel" HorizontalContentAlignment="Right" Width="270" Cursor="Hand" Content="" MouseDown="OnDuplicatesLabelClick" Foreground="Tomato" Height="30" />
+                            <Label x:Name="DuplicatesLabel" HorizontalContentAlignment="Right" Width="134" Cursor="Hand" Content="" MouseDown="OnDuplicatesLabelClick" Foreground="Tomato" Height="30" />
+                            <Label Name="InformationLabel" HorizontalContentAlignment="Right" Width="136" Cursor="Hand" Content="" MouseDown="OnDuplicatesLabelClick" Foreground="Tomato" Height="30"></Label>
                         </StackPanel>
                     </StackPanel>
                     
