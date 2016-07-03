@@ -1,16 +1,16 @@
-﻿<Controls:MetroWindow  xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro" x:Name="metroWindow"
+﻿<controls:MetroWindow  xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro" x:Name="MetroWindow"
         x:Class="Rush.Windows.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Rush" Height="590.7" Width="645" MaxWidth="645"
+        Title="Rush" Height="316" MaxHeight="316" Width="645" MaxWidth="645"
         Closing="OnWindowClosing"
-        xmlns:vc="clr-namespace:Rush.Converters" Icon="/Rush;component/Images/logo.PNG" Background="#FFDCF7F6">
-    <Controls:MetroWindow.RightWindowCommands>
-        <Controls:WindowCommands>
+        xmlns:vc="clr-namespace:Rush.Converters" Icon="/Rush;component/Images/logo.PNG">
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands>
             <Button Content="about" />
             <Button Content="home"></Button>
-        </Controls:WindowCommands>
-    </Controls:MetroWindow.RightWindowCommands>
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
 
 
     <Window.Resources>
@@ -20,19 +20,6 @@
         <vc:BoolToColorConverter x:Key="BoolToColorConverter"></vc:BoolToColorConverter>
         <vc:StringToBoolConverter x:Key="StringToBoolConverter"></vc:StringToBoolConverter>
         <vc:OrganizeButtonConverter x:Key="OrganizeButtonConverter"></vc:OrganizeButtonConverter>
-        <vc:ProgressToInfoConverter x:Key="ProgressToInfoConverter"></vc:ProgressToInfoConverter>
-        <Storyboard x:Key="WindowExpand">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="metroWindow">
-                <EasingDoubleKeyFrame KeyTime="0" Value="317"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="430"/>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="WindowCollapse">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="metroWindow">
-                <EasingDoubleKeyFrame KeyTime="0" Value="430"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="317"/>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
     </Window.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid Margin="5,10,0,0">
@@ -56,7 +43,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="10,5,0,0">
                         <Label>Destination</Label>
-                        <TextBox Name="DestinationTextBox" Controls:TextBoxHelper.Watermark="Destination Folder"  Margin="35,0,0,0" Width="339" BorderBrush="{Binding Tag, Converter={StaticResource BoolToColorConverter}, RelativeSource={RelativeSource Self}}" BorderThickness="2,1,1,1" ToolTip="The Destination Folder" Tag="{Binding Text, Converter={StaticResource StringToBoolConverter}, RelativeSource={RelativeSource Self}}" IsReadOnly="True"></TextBox>
+                        <TextBox Name="DestinationTextBox" controls:TextBoxHelper.Watermark="Destination Folder"  Margin="35,0,0,0" Width="339" BorderBrush="{Binding Tag, Converter={StaticResource BoolToColorConverter}, RelativeSource={RelativeSource Self}}" BorderThickness="2,1,1,1" ToolTip="The Destination Folder" Tag="{Binding Text, Converter={StaticResource StringToBoolConverter}, RelativeSource={RelativeSource Self}}" IsReadOnly="True"></TextBox>
                         <Button Name="DestinationBrowseButton" Style="{DynamicResource SquareButtonStyle}" Click="OnDestinationBrowseButtonClick" Margin="5,0,0,0" ToolTip="Select The Destination Location">Browse</Button>
                     </StackPanel>
                 </StackPanel>
@@ -81,29 +68,6 @@
                         <Label Name="OrderValidationLabel" Foreground="Tomato" FontSize="11"></Label>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Visibility="Visible" x:Name="progressStack" Margin="20,5,10,0">
-                    <StackPanel Orientation="Horizontal">
-                        <Label Name="TitleLabel" FontSize="18.667" FontWeight="Bold" FontFamily="Segoe UI Symbol" Height="34" Width="330"></Label>
-                        <StackPanel Orientation="Horizontal">
-                            <Label x:Name="DuplicatesLabel" HorizontalContentAlignment="Right" Width="134" Cursor="Hand" Content="" MouseDown="OnDuplicatesLabelClick" Foreground="Tomato" Height="30" />
-                            <Label Name="InformationLabel" HorizontalContentAlignment="Right" Width="136" Cursor="Hand" Content="" MouseDown="OnDuplicatesLabelClick" Foreground="Tomato" Height="30"></Label>
-                        </StackPanel>
-                    </StackPanel>
-                    
-                    <Label Name="MessageLabel" Height="35"></Label>
-                    <StackPanel Orientation="Horizontal">
-                        <Controls:MetroProgressBar x:Name="progressbar" Height="27" Margin="0,0,10,0" Width="500"/>
-                        <Label Name="CountLabel" Width="91" Foreground="#FF008287">
-                            <Label.Content>
-                                <MultiBinding Converter="{StaticResource ProgressToInfoConverter}">
-                                    <Binding ElementName="progressbar" Path="Maximum"></Binding>
-                                    <Binding ElementName="progressbar" Path="Value"></Binding>
-                                </MultiBinding>
-                            </Label.Content>
-                        </Label>
-                    </StackPanel>
-                    
-                </StackPanel>
                 <StackPanel Margin="0,10,0,0">
                     <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
                         <Button x:Name="OrganizeButton" Style="{DynamicResource SquareButtonStyle}"  Margin="10,0,0,0" Height="29" Click="OnOrganizeButtonClick" Content="Organize" >
@@ -116,11 +80,11 @@
                             </Button.IsEnabled>
                         </Button>
                         <Button x:Name="ExitButton" Style="{DynamicResource SquareButtonStyle}" Margin="10,0,0,0" Width="57" Click="OnExitButtonClick" IsCancel="True" >Exit</Button>
-                        <CheckBox x:Name="OverwriteExistingCheckBox" FontWeight="Bold" Margin="350,0,0,0" Width="129" Height="18" IsChecked="True" FontFamily="Segoe UI">Overwrite Existing</CheckBox>
+                        <CheckBox x:Name="OverwriteExistingCheckBox" FontWeight="Bold" Margin="350,0,0,0" Width="137" Height="18" IsChecked="True" FontFamily="Segoe UI">Overwrite Existing</CheckBox>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
         </Grid>
     </ScrollViewer>
 
-</Controls:MetroWindow>
+</controls:MetroWindow>

@@ -37,8 +37,10 @@ D:\rusith\Projects\Rush\Rush\obj\Debug\Windows\ProcessWindow.g.cs
 F:\Projects\Rush\Rush\obj\Debug\Rush.csprojResolveAssemblyReference.cache
 F:\Projects\Rush\Rush\obj\Debug\Windows\FileOrderHelpWindow.baml
 F:\Projects\Rush\Rush\obj\Debug\App.baml
+F:\Projects\Rush\Rush\obj\Debug\Windows\DuplicatesWindow.g.cs
 F:\Projects\Rush\Rush\obj\Debug\Windows\FileOrderHelpWindow.g.cs
 F:\Projects\Rush\Rush\obj\Debug\Windows\MainWindow.g.cs
+F:\Projects\Rush\Rush\obj\Debug\Windows\ProcessWindow.g.cs
 F:\Projects\Rush\Rush\obj\Debug\App.g.cs
 F:\Projects\Rush\Rush\obj\Debug\GeneratedInternalTypeHelper.g.cs
 F:\Projects\Rush\Rush\obj\Debug\Rush_MarkupCompile.cache
@@ -53,11 +55,13 @@ F:\Projects\Rush\Rush\bin\Debug\taglib-sharp.dll
 F:\Projects\Rush\Rush\bin\Debug\MahApps.Metro.pdb
 F:\Projects\Rush\Rush\bin\Debug\MahApps.Metro.xml
 F:\Projects\Rush\Rush\bin\Debug\policy.2.0.taglib-sharp.config
+F:\Projects\Rush\Rush\obj\Debug\Windows\DuplicatesWindow.baml
 F:\Projects\Rush\Rush\obj\Debug\Windows\MainWindow.baml
+F:\Projects\Rush\Rush\obj\Debug\Windows\ProcessWindow.baml
 F:\Projects\Rush\Rush\obj\Debug\Rush.g.resources
 F:\Projects\Rush\Rush\obj\Debug\Rush.Properties.Resources.resources
 F:\Projects\Rush\Rush\obj\Debug\Rush.csproj.GenerateResource.Cache
 F:\Projects\Rush\Rush\obj\Debug\Rush.exe
 F:\Projects\Rush\Rush\obj\Debug\Rush.pdb
-F:\Projects\Rush\Rush\obj\Debug\Windows\DuplicatesWindow.g.cs
-F:\Projects\Rush\Rush\obj\Debug\Windows\DuplicatesWindow.baml
+F:\Projects\Rush\Rush\obj\Debug\Windows\LogWindow.baml
+F:\Projects\Rush\Rush\obj\Debug\Windows\LogWindow.g.cs

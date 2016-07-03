@@ -369,14 +369,10 @@ namespace Rush.Windows
         // ReSharper disable once FunctionComplexityOverflow
         private async void Organize()
         {
-            OrganizeButton.IsEnabled = false;
-            ExitButton.Content = "Cancel";
-
             if (_fileCount < 1)
             {
                 await this.ShowMessageAsync("No Files", "No files present to organize in the selected folders.\nplease select another location that have supported file types ", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
                 OrganizeButton.IsEnabled = true;
-                ExitButton.Content = "Exit";
                 return;
             }
             if (Mp3CheckBox.IsChecked == false && M4ACheckBox.IsChecked == false && AacCheckBox.IsChecked == false &&
@@ -384,14 +380,12 @@ namespace Rush.Windows
             {
                 await this.ShowMessageAsync("File types not selected", "File types not selected.\nyou should select at least one file type to continue", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
                 OrganizeButton.IsEnabled = true;
-                ExitButton.Content = "Exit";
                 return;
             }
 
             if (_order.FileNameTemplate.Template != null && _order.FileNameTemplate.Template.Count > 0)
             {
                 await this.ShowMessageAsync("Be careful!", "you are going to change the file name template . be careful. because if you set a more generic type name template some files (maybe most) will lose.add count variable to make sure all files in the folder have deferent file names.", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
-               
             }
 
             var sources = new HashSet<string>();
@@ -406,9 +400,9 @@ namespace Rush.Windows
                 ExitButton.Content = "Exit";
                 return;
             }
-            
+
             var fileTypes = new List<string>();
-            if(Mp3CheckBox.IsChecked.GetValueOrDefault())
+            if (Mp3CheckBox.IsChecked.GetValueOrDefault())
                 fileTypes.Add("mp3");
             if (M4ACheckBox.IsChecked.GetValueOrDefault())
                 fileTypes.Add("m4a");
@@ -438,241 +432,30 @@ namespace Rush.Windows
             }
 
             var destination = new DirectoryInfo(DestinationTextBox.Text);
-            if (destination.Exists == false)
-                Directory.CreateDirectory(destination.FullName);
-            var expand = FindResource("WindowExpand") as Storyboard;
-            expand?.Begin();
-            progressStack.Visibility = Visibility.Visible;
-
-            var overwrite = OverwriteExistingCheckBox.IsChecked.GetValueOrDefault();
-            await Task.Factory.StartNew(() =>
+            try
             {
-                try
-                {
-                    progressbar.Dispatcher.Invoke(() =>
-                    {
-                        progressbar.Minimum = 0;
-                        progressbar.Maximum = files.Count;
-                        progressbar.Value = 0;
-                    });
-
-                    TitleLabel.Dispatcher.Invoke(() =>
-                    {
-                        TitleLabel.Content = "Processing Files";
-                    });
-                    int[] fileIndex = {0};
-                    _duplicates = new ObservableCollection<FileInformation>();
-                    var duplicateContentBinding = new Binding("Count")
-                    {
-                        Source = _duplicates,
-                        Converter = new CountToDuplicateConverter()
-                    };
-                    DuplicatesLabel.Dispatcher.Invoke(() =>
-                    {
-                        BindingOperations.SetBinding(DuplicatesLabel, ContentProperty, duplicateContentBinding);
-                        DuplicatesLabel.Tag = _duplicates;
-                    });
-                    foreach (var file in files)
-                    {
-                        if (_operationCancellationToken.IsCancellationRequested)
-                        {
-                            return;
-                        }
-                        var file1 = file.SourceFile;
-                        var file2 = file;
-                        foreach (
-                            var f in
-                                files.Where(f => !f.Equals(file2) && !f.IsDuplicate)
-                                    .Where(f => f.SourceFile.Name == file2.SourceFile.Name &&
-                                                f.SourceFile.Length == file2.SourceFile.Length))
-                        {
-                            f.IsDuplicate = true;
-                            f.Duplicate = file;
-                            _duplicates.Add(f);
-                        }
-
-                        MessageLabel.Dispatcher.Invoke(() =>
-                        {
-                            MessageLabel.Content = file1.Name;
-                        });
-
-                        progressbar.Dispatcher.Invoke(() =>
-                        {
-                            progressbar.Value = fileIndex[0];
-                        });
-
-                        var taginfo = TagLib.File.Create(file1.FullName);
-                        var newfile = destination.FullName;
-                        foreach (var tag in _order.Order)
-                        {
-                            switch (tag)
-                            {
-                                case OrderElement.Album:
-                                    var alb = taginfo.Tag.Album;
-                                    if (string.IsNullOrWhiteSpace(alb))
-                                        alb = "UnknownAlbum";
-                                    newfile = Path.Combine(newfile, alb.ToSafeFileName());
-                                    break;
-                                case OrderElement.Artist:
-                                    var art = "UnknownArtist";
-                                    if (taginfo.Tag.Performers != null && taginfo.Tag.Performers.Length > 0 &&
-                                        taginfo.Tag.Performers.All(c => c.Length > 0))
-                                        art = taginfo.Tag.Performers.Aggregate((c, n) => c + " & " + n).TrimEnd('&');
-                                    newfile = Path.Combine(newfile, art.ToSafeFileName());
-                                    break;
-                                case OrderElement.Genre:
-                                    var genre = "UnknownGenre";
-                                    if (taginfo.Tag.Genres != null && taginfo.Tag.Genres.Length > 0 &&
-                                        taginfo.Tag.Genres.All(c => c.Length > 0))
-                                        genre = taginfo.Tag.Genres.Aggregate((c, n) => c + " & " + n).TrimEnd('&');
-                                    newfile = Path.Combine(newfile, genre.ToSafeFileName());
-                                    break;
-                                case OrderElement.Year:
-                                    var year = "UnknownYear";
-                                    if (taginfo.Tag.Year > 0)
-                                        year = taginfo.Tag.Year.ToString();
-                                    newfile = Path.Combine(newfile, year);
-                                    break;
-                                case OrderElement.File:
-                                    if (_order.FileNameTemplate.Template.Count > 0)
-                                    {
-                                        var fn = "";
-                                        var litindex = 0;
-                                        foreach (var f in _order.FileNameTemplate.Template)
-                                        {
-                                            switch (f)
-                                            {
-                                                case FileNameItem.Album:
-                                                    var album = taginfo.Tag.Album;
-                                                    if (string.IsNullOrWhiteSpace(album))
-                                                        album = "";
-                                                    fn += album;
-                                                    break;
-                                                case FileNameItem.Artist:
-                                                    var artist = "";
-                                                    if (taginfo.Tag.Performers != null &&
-                                                        taginfo.Tag.Performers.Length > 0 &&
-                                                        taginfo.Tag.Performers.All(c => c.Length > 0))
-                                                        artist =
-                                                            taginfo.Tag.Performers.Aggregate((c, n) => c + " & " + n)
-                                                                .TrimEnd('&');
-                                                    if (string.IsNullOrWhiteSpace(artist))
-                                                        artist = "";
-
-                                                    fn += artist;
-                                                    break;
-                                                case FileNameItem.Count:
-                                                    var count =
-                                                        files.Where(v => v.DestinationFile != null)
-                                                            .Count(v => v.DestinationFile.DirectoryName == newfile) + 1;
-                                                    fn += count.ToString();
-                                                    break;
-                                                case FileNameItem.Literel:
-                                                    var lit =
-                                                        _order.FileNameTemplate.Literel[litindex];
-                                                    litindex++;
-                                                    if (string.IsNullOrWhiteSpace(lit))
-                                                        fn += "";
-                                                    else
-                                                        fn += lit;
-                                                    break;
-                                                case FileNameItem.Title:
-                                                    var title = taginfo.Tag.Title;
-                                                    if (string.IsNullOrWhiteSpace(title))
-                                                        title = "";
-                                                    fn += title;
-                                                    break;
-                                                case FileNameItem.Trak:
-                                                    var track = taginfo.Tag.Track;
-                                                    if (track < 1)
-                                                        fn += "";
-                                                    else
-                                                        fn += track.ToString();
-                                                    break;
-                                            }
-
-                                        }
-                                        fn += file1.Extension;
-                                        newfile = Path.Combine(newfile, fn.ToSafeFileName());
-                                    }
-                                    else
-                                    {
-                                        var fileName = file1.Name;
-                                        newfile = Path.Combine(newfile, fileName.ToSafeFileName());
-                                    }
-                                    break;
-                            }
-                        }
-                        try
-                        {
-                            file.DestinationFile = new FileInfo(newfile);
-                        }
-                        catch (PathTooLongException)
-                        {
-                            newfile = Path.Combine(destination.FullName, "PathTooLong", file1.Name);
-                            file.DestinationFile = new FileInfo(newfile);
-                        }
-                        fileIndex[0] = fileIndex[0] + 1;
-                    }
-
-                    TitleLabel.Dispatcher.Invoke(() =>
-                    {
-                        TitleLabel.Content = "Copying  Files";
-                    });
-
-
-                    fileIndex[0] = 0;
-                    foreach (var file in files)
-                    {
-                        if (_operationCancellationToken.IsCancellationRequested)
-                        {
-                            return;
-                        }
-                        var sf = file.SourceFile;
-                        MessageLabel.Dispatcher.Invoke(() =>
-                        {
-                            MessageLabel.Content = sf.Name;
-                        });
-
-                        progressbar.Dispatcher.Invoke(() =>
-                        {
-                            progressbar.Value = fileIndex[0];
-                        });
-                        fileIndex[0]++;
-                        if (file.DestinationFile.Directory != null && !file.DestinationFile.Directory.Exists)
-                            Directory.CreateDirectory(file.DestinationFile.Directory.FullName);
-
-                        if (file.DestinationFile.Exists && overwrite)
-                        {
-                            File.SetAttributes(file.DestinationFile.FullName, FileAttributes.Normal);
-                            file.DestinationFile.Delete();
-                        }
-
-                        File.Copy(file.SourceFile.FullName, file.DestinationFile.FullName, true);
-
-                    }
-                }
-                catch (Exception)
-                {
-                    // ignored
-                }
-            }, _operationCancellationToken.Token);
-
-            _operationCancellationToken = new CancellationTokenSource();
-            OrganizeButton.Dispatcher.Invoke(() =>
+                if (destination.Exists == false)
+                    Directory.CreateDirectory(destination.FullName);
+            }
+            catch (Exception)
             {
+                await this.ShowMessageAsync("Cannot Create Destination Folder", "The Destination Folder You selected is not exists now. and i cannot create it. please select deferent location and try again", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
                 OrganizeButton.IsEnabled = true;
-            });
-            ExitButton.Dispatcher.Invoke(() =>
-            {
-                ExitButton.Content = "Exit";
-            });
-            progressStack.Dispatcher.Invoke(() =>
-            {
-                progressStack.Visibility = Visibility.Collapsed;
-            });
-            var coll = FindResource("WindowCollapse") as Storyboard;
-            coll?.Begin();
+                return;
+            }
+            var overwrite = OverwriteExistingCheckBox.IsChecked.GetValueOrDefault();
+            var progress = new ProcessWindow(_order, sources, destination,
+                new FileTypeInfo
+                {
+                    Aac = AacCheckBox.IsChecked.GetValueOrDefault(),
+                    Mp3 = Mp3CheckBox.IsChecked.GetValueOrDefault(),
+                    M4A = M4ACheckBox.IsChecked.GetValueOrDefault(),
+                    Ogg = OggCheckBox.IsChecked.GetValueOrDefault(),
+                    Falc = FalcCheckBox.IsChecked.GetValueOrDefault(),
+                    Wma = WmaCheckBox.IsChecked.GetValueOrDefault()
+                }, files, overwrite);
+
+            progress.ShowDialog();
         }
 
         private void OnAddNewSourceFolderButtonClick(object sender, RoutedEventArgs e)

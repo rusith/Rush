@@ -92,6 +92,8 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Models\FileInformation.cs" />
     <Compile Include="Models\FileNameTemplate.cs" />
+    <Compile Include="Models\FileTypeInfo.cs" />
+    <Compile Include="Models\LogItem.cs" />
     <Compile Include="Models\OrganizeOrder.cs" />
     <Compile Include="Windows\DuplicatesWindow.xaml.cs">
       <DependentUpon>DuplicatesWindow.xaml</DependentUpon>
@@ -99,12 +101,18 @@
     <Compile Include="Windows\FileOrderHelpWindow.xaml.cs">
       <DependentUpon>FileOrderHelpWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\LogWindow.xaml.cs">
+      <DependentUpon>LogWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Windows\ProcessWindow.xaml.cs">
+      <DependentUpon>ProcessWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Windows\DuplicatesWindow.xaml">
       <SubType>Designer</SubType>
@@ -114,7 +122,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\LogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ProcessWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,0 +1,29 @@
+﻿<controls:MetroWindow x:Class="Rush.Windows.LogWindow" xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Log" Width="831" Activated="OnWindowActivated" ResizeMode="NoResize" Icon="/Rush;component/logo.ico">
+    <StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,5,0,0" >
+            <Label x:Name="InformationLabel" Width="464"/>
+            <Label Content="filter :"/>
+            <ComboBox x:Name="TypeComboBox" Width="310"/>
+        </StackPanel>
+        <StackPanel Margin="0,10,0,0">
+            <ListView Name="Log" Height="416">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn  Header="Message" Width="550" DisplayMemberBinding="{Binding Message}" />
+                        <GridViewColumn Header="Type" Width="290" DisplayMemberBinding="{Binding TypeString}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Margin="0,10,0,0">
+            <Button Name="SaveFileButton" Style="{DynamicResource SquareButtonStyle}" Margin="5,0,0,0" Height="28" Width="85">Save To A File</Button>
+            <Button Name="CloseButton" Style="{DynamicResource SquareButtonStyle}" Margin="20,0,0,0" Height="28">Close</Button>
+        </StackPanel>
+    </StackPanel>
+</controls:MetroWindow>
