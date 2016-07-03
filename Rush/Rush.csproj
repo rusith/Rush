@@ -95,9 +95,6 @@
     <Compile Include="Models\FileTypeInfo.cs" />
     <Compile Include="Models\LogItem.cs" />
     <Compile Include="Models\OrganizeOrder.cs" />
-    <Compile Include="Windows\DuplicatesWindow.xaml.cs">
-      <DependentUpon>DuplicatesWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\FileOrderHelpWindow.xaml.cs">
       <DependentUpon>FileOrderHelpWindow.xaml</DependentUpon>
     </Compile>
@@ -114,10 +111,6 @@
     <Compile Include="Windows\ProcessWindow.xaml.cs">
       <DependentUpon>ProcessWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="Windows\DuplicatesWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Windows\FileOrderHelpWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
