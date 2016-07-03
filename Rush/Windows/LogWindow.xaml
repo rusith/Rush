@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Log" Width="831" Activated="OnWindowActivated" ResizeMode="NoResize" Icon="/Rush;component/logo.ico">
+        Title="Log" Width="831" MaxHeight="545" Icon="/Rush;component/logo.ico" Height="545" Loaded="OnWindowLoaded">
     <StackPanel>
         <StackPanel Orientation="Horizontal" Margin="0,5,0,0" >
             <Label x:Name="InformationLabel" Width="464"/>
@@ -22,8 +22,8 @@
             </ListView>
         </StackPanel>
         <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Margin="0,10,0,0">
-            <Button Name="SaveFileButton" Style="{DynamicResource SquareButtonStyle}" Margin="5,0,0,0" Height="28" Width="85">Save To A File</Button>
-            <Button Name="CloseButton" Style="{DynamicResource SquareButtonStyle}" Margin="20,0,0,0" Height="28">Close</Button>
+            <Button Name="SaveFileButton" Style="{DynamicResource SquareButtonStyle}" Margin="5,0,0,0" Height="28" Width="85" Click="OnSaveToAFileButtonClick">Save To A File</Button>
+            <Button Name="CloseButton" Style="{DynamicResource SquareButtonStyle}" Margin="20,0,0,0" Height="28" Click="OnCloseButtonClick">Close</Button>
         </StackPanel>
     </StackPanel>
 </controls:MetroWindow>

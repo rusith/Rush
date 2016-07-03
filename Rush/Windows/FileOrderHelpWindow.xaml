@@ -2,7 +2,7 @@
         x:Class="Rush.Windows.FileOrderHelpWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="How to setup file order" MaxHeight="222" MaxWidth="586" Height="222" Width="586">
+        Title="How to setup file order" Height="421.5" Width="586" ResizeMode="NoResize">
     <Grid Margin="0,0,2,0">
         <Label Content="How to  Setup File Order" HorizontalAlignment="Left" Height="44" Margin="10,0,0,0" VerticalAlignment="Top" Width="254" FontSize="20" FontWeight="Bold"/>
         <Label Content=" Enter the Order of folders to be created in the destinations folder .&#10;
@@ -12,7 +12,20 @@
 &lt;year&gt; tag represents the year of the media file&#10;
 &lt;genre&gt; tag represents the genre of the media media file
 the order text can only have these 5 tags" HorizontalAlignment="Left" Height="106" Margin="10,34,0,0" VerticalAlignment="Top" Width="558"/>
-        <Button x:Name="CloseButton" Style="{DynamicResource SquareButtonStyle}" Content="Close" HorizontalAlignment="Left" Margin="483,147,0,0" VerticalAlignment="Top" Width="75" ToolTip="Close Help Window" Click="OnCloseButtonClick"/>
+        <Button x:Name="CloseButton" Style="{DynamicResource SquareButtonStyle}" Content="Close" HorizontalAlignment="Left" Margin="493,349,0,0" VerticalAlignment="Top" Width="75" ToolTip="Close Help Window" Click="OnCloseButtonClick"/>
+        <Label Content="How To Setup File Name" HorizontalAlignment="Left" Height="44" Margin="10,137,0,0" VerticalAlignment="Top" Width="254" FontSize="20" FontWeight="Bold"/>
+        <Label Content="To setup the file name enter variables inside File tag.&#10;
+variables you can use :&#10;
+    [title] -&gt; title of the medial file&#10;
+    [album] -&gt; album of the file&#10;
+    [track] -&gt; track number of the file&#10;
+    [artist] -&gt; artist of the file&#10;
+    [count] -&gt; (current number of files of the directory)+1 &#10;
+    [&quot;text&quot;] -&gt; represents the text inside  &quot;&quot; in this example 'text'&#10;
+if the tag info is not available its replaced with empty string.&#10;
+example : &lt;File[title][&quot;-&quot;][artist]&gt;" HorizontalAlignment="Left" Height="173" Margin="10,171,0,0" VerticalAlignment="Top" Width="558" >
+            
+        </Label>
 
     </Grid>
 </Controls:MetroWindow>

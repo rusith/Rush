@@ -3,7 +3,6 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Rush" Height="316" MaxHeight="316" Width="645" MaxWidth="645"
-        Closing="OnWindowClosing"
         xmlns:vc="clr-namespace:Rush.Converters" Icon="/Rush;component/Images/logo.PNG">
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
@@ -11,8 +10,6 @@
             <Button Content="home"></Button>
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
-
-
     <Window.Resources>
         <vc:ListSelectedToBool x:Key="ListSelectedToBoolConverter"></vc:ListSelectedToBool>
         <vc:ComboBoxAndButtonTooltipMultiValueConverter x:Key="ComboBoxAndButtonTooltipMultiValueConverter"></vc:ComboBoxAndButtonTooltipMultiValueConverter>
@@ -86,5 +83,4 @@
             </StackPanel>
         </Grid>
     </ScrollViewer>
-
 </controls:MetroWindow>

@@ -1,6 +1,4 @@
-﻿
-using System;
-using System.IO;
+﻿using System.IO;
 
 namespace Rush.Models
 {
@@ -11,11 +9,11 @@ namespace Rush.Models
             return IsDuplicate.Equals(other.IsDuplicate) && Equals(Duplicate, other.Duplicate) && Equals(SourceFile, other.SourceFile) && Equals(DestinationFile, other.DestinationFile);
         }
         public bool IsDuplicate { get; set; }
-
         public FileInformation Duplicate { get; set; }
-
         public FileInfo SourceFile { get; set; }
         public FileInfo DestinationFile { get; set; }
+        public bool Processed { get; set; }
+        public bool Copied { get; set; }
 
     }
 }

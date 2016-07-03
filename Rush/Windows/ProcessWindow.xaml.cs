@@ -12,21 +12,19 @@ namespace Rush.Windows
 {
     public partial class ProcessWindow 
     {
-        private OrganizeOrder _order;
-        private HashSet<string> _sources;
-        private DirectoryInfo _destination;
-        private FileTypeInfo _fileTypes;
-        private HashSet<FileInformation> _files;
-        private bool _overwrite;
+        private readonly OrganizeOrder _order;
+        private readonly HashSet<string> _sources;
+        private readonly DirectoryInfo _destination;
+        private readonly List<FileInformation> _files;
+        private readonly bool _overwrite;
 
         private CancellationTokenSource _cancellation;
           
-        public ProcessWindow(OrganizeOrder order,HashSet<string> sources,DirectoryInfo destination,FileTypeInfo fileTypes,HashSet<FileInformation> files,bool overwrite  )
+        public ProcessWindow(OrganizeOrder order,HashSet<string> sources,DirectoryInfo destination,List<FileInformation> files,bool overwrite  )
         {
             _order = order;
             _sources = sources;
             _destination = destination;
-            _fileTypes = fileTypes;
             _files = files;
             _overwrite = overwrite;
             _cancellation=new CancellationTokenSource();
@@ -51,10 +49,8 @@ namespace Rush.Windows
                         TitleLabel.Content = "Processing Files";
                     });
 
-                    var duplicates = new List<FileInformation>();
-                    var fileindex = new int[] {0};
+                    var fileindex = new[] {0};
                     var log = new List<LogItem>();
-                    var skipped = 0;
                     foreach (var file in _files)
                     {
                         if (_cancellation.IsCancellationRequested)
@@ -63,7 +59,7 @@ namespace Rush.Windows
                             {
                                 Dispatcher.Invoke(() =>
                                 {
-                                    var logwindow = new LogWindow(_files.Count, skipped, log);
+                                    var logwindow = new LogWindow(_files, log,_destination,_sources);
                                     logwindow.ShowDialog();
                                 });
                             }
@@ -83,7 +79,6 @@ namespace Rush.Windows
                         {
                             f.IsDuplicate = true;
                             f.Duplicate = file;
-                            duplicates.Add(f);
                             log.Add(new LogItem(LogItem.LogItemType.Duplicate, "'{0}' is with file {1}", f.SourceFile.Name,
                                 f.Duplicate.SourceFile.Name));
                         }
@@ -227,6 +222,7 @@ namespace Rush.Windows
                             }
                         }
                         file.DestinationFile = new FileInfo(newfile);
+                        file.Processed = true;
                         fileindex[0] = fileindex[0] + 1;
                     }
                     TitleLabel.Dispatcher.Invoke(() =>
@@ -244,7 +240,7 @@ namespace Rush.Windows
                             {
                                 Dispatcher.Invoke(() =>
                                 {
-                                    var logwindow = new LogWindow(_files.Count, skipped, log);
+                                    var logwindow = new LogWindow(_files, log,_destination,_sources);
                                     logwindow.ShowDialog();
                                 });
                             }
@@ -275,7 +271,6 @@ namespace Rush.Windows
                             catch (Exception)
                             {
                                 log.Add(new LogItem(LogItem.LogItemType.CannotCreateDirectory, "Cannot Create Directory '{0}' . File '{1}' Will Not be Coped", file.DestinationFile.Directory.FullName,file.DestinationFile.Name));
-                                skipped++;
                                 continue;
                             }
                         }
@@ -290,13 +285,13 @@ namespace Rush.Windows
                             catch (Exception)
                             {
                                 log.Add(new LogItem(LogItem.LogItemType.CannotDeleteExistingFile, "Cannot delete File '{0}'. The New File Will Not be Coped (Overwrite Enabled)", file.DestinationFile.Directory.FullName, file.DestinationFile.Name));
-                                skipped++;
                                 continue;
                             }
                         }
                         try
                         {
                             File.Copy(file.SourceFile.FullName, file.DestinationFile.FullName, true);
+                            file.Copied = true;
                         }
                         catch (PathTooLongException)
                         {
@@ -310,10 +305,10 @@ namespace Rush.Windows
                                 catch (Exception)
                                 {
                                     log.Add(new LogItem(LogItem.LogItemType.CannotCreateDirectory, "Cannot Create PathTooLong Directory . File '{1}' Will Not be Coped", file.DestinationFile.Directory.FullName, file.DestinationFile.Name));
-                                    skipped++;
                                     continue;
                                 }
                                 File.Copy(file.SourceFile.FullName, Path.Combine(pathTooLong.FullName,file.DestinationFile.Name), true);
+                                file.Copied = true;
                             }
                             log.Add(new LogItem(LogItem.LogItemType.PathTooLong, "Cannot Copy File '{0}' because the path is too long. the file copied to 'PathTooLong' folder", file.DestinationFile.Name));
                         }
@@ -322,7 +317,7 @@ namespace Rush.Windows
                     {
                         Dispatcher.Invoke(() =>
                         {
-                            var logwindow = new LogWindow(_files.Count, skipped, log);
+                            var logwindow = new LogWindow(_files, log,_destination,_sources);
                             logwindow.ShowDialog();
                         });
                     }
@@ -331,7 +326,7 @@ namespace Rush.Windows
                         Close();
                     });
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     // ignored
                 }

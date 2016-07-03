@@ -1,32 +1,22 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using MahApps.Metro.Controls.Dialogs;
-using Rush.Controllers;
 using Rush.Extensions;
 using Rush.Models;
-using Rush.Converters;
-using WinForms =System.Windows.Forms;
+using WinForms = System.Windows.Forms;
 
 
 namespace Rush.Windows
 {
     public partial class MainWindow
     {
-
-        private readonly RushController _controller;
         private int _fileCount;
         private int _mp3Count;
         private int _m4ACount;
@@ -35,16 +25,12 @@ namespace Rush.Windows
         private int _oggCount;
         private int _wmaCount;
         private OrganizeOrder _order;
-        private ObservableCollection<FileInformation> _duplicates;
-        private ObservableCollection<string> _pathTooLong = null;
-        private string _pathTooLongLocation = string.Empty;  
-        private CancellationTokenSource _operationCancellationToken=new CancellationTokenSource();
+        private string _lastSource;
 
-        public MainWindow(RushController controller)
+        public MainWindow()
         {
             InitializeComponent();
             InitializeControls();
-            _controller = controller;
         }
 
         private void InitializeControls()
@@ -60,6 +46,8 @@ namespace Rush.Windows
                 {
                     Description = @"select a new source folder to add source locations list"
                 };
+                if (string.IsNullOrEmpty(_lastSource) == false)
+                    folderDialog.SelectedPath = _lastSource;
                 var folderDialogResult = folderDialog.ShowDialog();
                 if (folderDialogResult != System.Windows.Forms.DialogResult.OK) break;
                 if (folderDialog.SelectedPath.Length < 4)
@@ -97,6 +85,7 @@ namespace Rush.Windows
                         Content = selectedDir.Name
                     };
                     SourceLocationsComboBox.Items.Add(comboBoxItem);
+                    _lastSource = selectedDir.FullName;
                 }
                 break;
             }
@@ -385,7 +374,12 @@ namespace Rush.Windows
 
             if (_order.FileNameTemplate.Template != null && _order.FileNameTemplate.Template.Count > 0)
             {
-                await this.ShowMessageAsync("Be careful!", "you are going to change the file name template . be careful. because if you set a more generic type name template some files (maybe most) will lose.add count variable to make sure all files in the folder have deferent file names.", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
+                if (!_order.FileNameTemplate.Template.Contains(FileNameItem.Count))
+                {
+                    var result = await this.ShowMessageAsync("Be careful!", "you are going to change the file name template . be careful. because if you set a more generic type name template some files (maybe most) will lose.add count variable to make sure all files in the folder have deferent file names.", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings { AffirmativeButtonText = "Continue", NegativeButtonText = "Stop" });
+                    if (result == MessageDialogResult.Negative)
+                        return;
+                }
             }
 
             var sources = new HashSet<string>();
@@ -445,15 +439,7 @@ namespace Rush.Windows
             }
             var overwrite = OverwriteExistingCheckBox.IsChecked.GetValueOrDefault();
             var progress = new ProcessWindow(_order, sources, destination,
-                new FileTypeInfo
-                {
-                    Aac = AacCheckBox.IsChecked.GetValueOrDefault(),
-                    Mp3 = Mp3CheckBox.IsChecked.GetValueOrDefault(),
-                    M4A = M4ACheckBox.IsChecked.GetValueOrDefault(),
-                    Ogg = OggCheckBox.IsChecked.GetValueOrDefault(),
-                    Falc = FalcCheckBox.IsChecked.GetValueOrDefault(),
-                    Wma = WmaCheckBox.IsChecked.GetValueOrDefault()
-                }, files, overwrite);
+                 files.ToList(), overwrite);
 
             progress.ShowDialog();
         }
@@ -489,7 +475,8 @@ namespace Rush.Windows
 
         private void OnFileOrderHelpImagePreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            _controller.ShowFileOrderHelpWindow();
+            var helpWindow = new FileOrderHelpWindow();
+            helpWindow.Show();
         }
 
         private void OnOrganizeButtonClick(object sender, RoutedEventArgs e)
@@ -499,39 +486,9 @@ namespace Rush.Windows
 
         private async void OnExitButtonClick(object sender, RoutedEventArgs e)
         {
-            switch ((string) ExitButton.Content)
-            {
-                case "Exit":
-                {
-                    var result = await this.ShowMessageAsync("confirm exit", "Are you sure ? do you want to exit", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" });
-                    if (result == MessageDialogResult.Affirmative)
-                        Application.Current.Shutdown();
-                }
-                    break;
-                case "Cancel":
-                {
-                    var result = await this.ShowMessageAsync("confirm cancel", "Are you sure ? do you want to cancel current operation?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" });
-                    if (result == MessageDialogResult.Affirmative)
-                    {
-                        _operationCancellationToken.Cancel();
-                        var animation = FindResource("WindowCollapse") as Storyboard;
-                        animation?.Begin();
-                    }
-                }
-                    break;
-            }
-        }
-
-        private void OnDuplicatesLabelClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            var duplicateWindow = new DuplicatesWindow(ref _duplicates);
-            duplicateWindow.ShowDialog();
-        }
-
-        private void OnWindowClosing(object sender, CancelEventArgs e)
-        {
-           _operationCancellationToken.Cancel();
-          
+            var result = await this.ShowMessageAsync("confirm exit", "Are you sure ? do you want to exit", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" });
+            if (result == MessageDialogResult.Affirmative)
+                Application.Current.Shutdown();
         }
     }
 }
