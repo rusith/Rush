@@ -6,7 +6,7 @@
         xmlns:vc="clr-namespace:Rush.Converters" Icon="/Rush;component/Images/logo.PNG">
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button Content="update" Name="UpdateButton" Click="OnUpdateButtonClick"/>
+            <Button Content="update" Name="UpdateButton" ToolTip="Check For Update . This Will Open Homepage if update available" Click="OnUpdateButtonClick"/>
             <Button Content="about" Name="AboutButton" Click="OnAboutButtonClick" />
             <Button Content="home" ToolTip="Goto Homepage" Click="OnHomeButtonClick" ></Button>
         </controls:WindowCommands>

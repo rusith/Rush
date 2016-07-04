@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -505,16 +506,22 @@ namespace Rush.Windows
 
         private void OnUpdateButtonClick(object sender, RoutedEventArgs e)
         {
-            //var file = new FileInfo("http://rusith.github.io/Rush/versionInfo.info");
-            var file = new StreamReader("http://rusith.github.io/Rush/versionInfo.info");
-            var line = "";
-            var first = true;
-            while ((line = file.ReadLine()) != null)
+            try
             {
-                if (first)
+                var client = new WebClient();
+                var stream = client.OpenRead("http://rusith.github.io/Rush/versionInfo.info");
+                if(stream==null)
+                    throw new Exception("");
+
+                var reader = new StreamReader(stream);
+                string line;
+                var first = true;
+                while ((line = reader.ReadLine()) != null)
                 {
-                    var version = 0d;
-                    Double.TryParse(line,out version);
+                    if (!first)
+                        continue;
+                    double version;
+                    Double.TryParse(line, out version);
                     if (version > Convert.ToDouble(ConfigurationManager.AppSettings["Version"]))
                     {
                         System.Diagnostics.Process.Start("http://rusith.github.io/Rush");
@@ -525,12 +532,15 @@ namespace Rush.Windows
                     }
                     first = false;
                 }
+
+                reader.Close();
+                stream.Close();
             }
+            catch (Exception)
+            {
 
-            file.Close();
-
-            // Suspend the screen.
-            Console.ReadLine();
+                this.ShowMessageAsync("Error", "Unable To Check version. please make sure you  are connected to the Internet and try again", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
+            }
         }
     }
 }
