@@ -3,9 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Rush.Windows"
         mc:Ignorable="d"
-        Title="AboutWindow" Height="300" Width="300" ResizeMode="NoResize">
+        Title="About" Height="320.301" Width="310.15" ResizeMode="NoResize" Icon="/Rush;component/logo.ico">
     <Grid>
         <Label Margin="94,21,99,157" >
             <Label.Background>
@@ -20,6 +19,6 @@
         <Label Margin="67,221,69,10">
             copyright Shanaka Rusith
         </Label>
-
+        <Button Name="CloseButton" Style="{DynamicResource SquareButtonStyle}" Margin="203,252,10,10" Click="CloseButtonOnClick">Close</Button>
     </Grid>
 </controls:MetroWindow>

@@ -7,5 +7,10 @@ namespace Rush.Windows
         {
             InitializeComponent();
         }
+
+        private void CloseButtonOnClick(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }
