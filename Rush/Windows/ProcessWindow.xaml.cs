@@ -49,7 +49,7 @@ namespace Rush.Windows
                         TitleLabel.Content = "Processing Files";
                     });
 
-                    var fileindex = new[] {0};
+                    var fileindex = new[] {1};
                     var log = new List<LogItem>();
                     foreach (var file in _files)
                     {
@@ -93,7 +93,16 @@ namespace Rush.Windows
                             ProgressBar.Value = fileindex[0];
                         });
 
-                        var taginfo = TagLib.File.Create(file1.FullName);
+                        TagLib.File taginfo;
+                        try
+                        {
+                            taginfo = TagLib.File.Create(file1.FullName);
+                        }
+                        catch (Exception)
+                        {
+                            taginfo = null;
+                        }
+                        
                         if (taginfo == null)
                             log.Add(new LogItem(LogItem.LogItemType.NoTag,
                                 "The file '{0}' has no tag info it will be copied to unknown[] folder", file1.Name));
@@ -104,7 +113,7 @@ namespace Rush.Windows
                             switch (tag)
                             {
                                 case OrderElement.Album:
-                                    var alb = taginfo.Tag.Album;
+                                    var alb = taginfo==null?"":taginfo.Tag.Album;
                                     if (string.IsNullOrWhiteSpace(alb))
                                     {
                                         alb = "UnknownAlbum";
@@ -114,26 +123,35 @@ namespace Rush.Windows
                                     break;
                                 case OrderElement.Artist:
                                     var art = "UnknownArtist";
-                                    if (taginfo.Tag.Performers != null && taginfo.Tag.Performers.Length > 0 &&
-                                        taginfo.Tag.Performers.All(c => c.Length > 0))
-                                        art = taginfo.Tag.Performers.Aggregate((c, n) => c + " & " + n).TrimEnd('&');
+                                    if (taginfo != null)
+                                    {
+                                        if (taginfo.Tag.Performers != null && taginfo.Tag.Performers.Length > 0 &&
+                                            taginfo.Tag.Performers.All(c => c.Length > 0))
+                                                art = taginfo.Tag.Performers.Aggregate((c, n) => c + " & " + n).TrimEnd('&');
+                                    }
                                     if(art== "UnknownArtist")
                                         log.Add(new LogItem(LogItem.LogItemType.ArtistNotFound, "Artist tag not found in file '{0}'. File Will Copy to 'UnknownArtist' folder", file1.Name));
                                     newfile = Path.Combine(newfile, art.ToSafeFileName());
                                     break;
                                 case OrderElement.Genre:
                                     var genre = "UnknownGenre";
-                                    if (taginfo.Tag.Genres != null && taginfo.Tag.Genres.Length > 0 &&
-                                        taginfo.Tag.Genres.All(c => c.Length > 0))
-                                        genre = taginfo.Tag.Genres.Aggregate((c, n) => c + " & " + n).TrimEnd('&');
+                                    if (taginfo != null)
+                                    {
+                                        if (taginfo.Tag.Genres != null && taginfo.Tag.Genres.Length > 0 &&
+                                            taginfo.Tag.Genres.All(c => c.Length > 0))
+                                                genre = taginfo.Tag.Genres.Aggregate((c, n) => c + " & " + n).TrimEnd('&');
+                                    }
                                     if(genre== "UnknownGenre")
                                         log.Add(new LogItem(LogItem.LogItemType.GenreNotFound, "Genre tag not found in file '{0}'. File Will Copy to 'UnknownGenre' folder", file1.Name));
                                     newfile = Path.Combine(newfile, genre.ToSafeFileName());
                                     break;
                                 case OrderElement.Year:
                                     var year = "UnknownYear";
-                                    if (taginfo.Tag.Year > 0)
-                                        year = taginfo.Tag.Year.ToString();
+                                    if (taginfo == null)
+                                    {
+                                        if (taginfo.Tag.Year > 0)
+                                            year = taginfo.Tag.Year.ToString();
+                                    }
                                     if(year== "UnknownYear")
                                         log.Add(new LogItem(LogItem.LogItemType.YearNotFound, "Year tag not found in file '{0}'. File Will Copy to 'UnknownYear' folder", file1.Name));
                                     newfile = Path.Combine(newfile, year);
@@ -148,7 +166,7 @@ namespace Rush.Windows
                                             switch (f)
                                             {
                                                 case FileNameItem.Album:
-                                                    var album = taginfo.Tag.Album;
+                                                    var album = taginfo == null?"":taginfo.Tag.Album;
                                                     if (string.IsNullOrWhiteSpace(album))
                                                     {
                                                         log.Add(new LogItem(LogItem.LogItemType.AlbumNotFound, "Album tag not found in file '{0}'. Album part of the file name will replace with empty string", file1.Name));
@@ -159,12 +177,15 @@ namespace Rush.Windows
                                                     break;
                                                 case FileNameItem.Artist:
                                                     var artist = "";
-                                                    if (taginfo.Tag.Performers != null &&
+                                                    if (taginfo != null)
+                                                    {
+                                                        if (taginfo.Tag.Performers != null &&
                                                         taginfo.Tag.Performers.Length > 0 &&
                                                         taginfo.Tag.Performers.All(c => c.Length > 0))
-                                                        artist =
-                                                            taginfo.Tag.Performers.Aggregate((c, n) => c + " & " + n)
-                                                                .TrimEnd('&');
+                                                            artist =
+                                                                taginfo.Tag.Performers.Aggregate((c, n) => c + " & " + n)
+                                                                    .TrimEnd('&');
+                                                    }
                                                     if (string.IsNullOrWhiteSpace(artist))
                                                     {
                                                         log.Add(new LogItem(LogItem.LogItemType.ArtistNotFound, "Artist tag not found in file '{0}'. Artist part of the file name will replace with empty string", file1.Name));
@@ -188,7 +209,7 @@ namespace Rush.Windows
                                                         fn += lit;
                                                     break;
                                                 case FileNameItem.Title:
-                                                    var title = taginfo.Tag.Title;
+                                                    var title = taginfo == null ? "":taginfo.Tag.Title;
                                                     if (string.IsNullOrWhiteSpace(title))
                                                     {
                                                         log.Add(new LogItem(LogItem.LogItemType.TitleNotFound, "Title tag not found in file '{0}'. Title part of the file name will replace with empty string", file1.Name));
@@ -198,7 +219,7 @@ namespace Rush.Windows
                                                     fn += title;
                                                     break;
                                                 case FileNameItem.Trak:
-                                                    var track = taginfo.Tag.Track;
+                                                    var track = taginfo == null ? 0 : taginfo.Tag.Track;
                                                     if (track < 1)
                                                     {
                                                         log.Add(new LogItem(LogItem.LogItemType.TrackNotFound, "Track tag not found in file '{0}'. Track part of the file name will replace with empty string", file1.Name));
@@ -326,7 +347,7 @@ namespace Rush.Windows
                         Close();
                     });
                 }
-                catch (Exception)
+                catch (Exception )
                 {
                     // ignored
                 }
