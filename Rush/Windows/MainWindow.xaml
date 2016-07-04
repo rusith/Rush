@@ -6,8 +6,8 @@
         xmlns:vc="clr-namespace:Rush.Converters" Icon="/Rush;component/Images/logo.PNG">
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button Content="about" />
-            <Button Content="home"></Button>
+            <Button Content="about" Name="AboutButton" Click="OnAboutButtonClick" />
+            <Button Content="home" ToolTip="Goto Homepage" Click="OnHomeButtonClick" ></Button>
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
     <Window.Resources>

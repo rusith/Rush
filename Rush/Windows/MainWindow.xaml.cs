@@ -490,5 +490,16 @@ namespace Rush.Windows
             if (result == MessageDialogResult.Affirmative)
                 Application.Current.Shutdown();
         }
+
+        private void OnHomeButtonClick(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://rusith.github.io/Rush");
+        }
+
+        private void OnAboutButtonClick(object sender, RoutedEventArgs e)
+        {
+            var about = new AboutWindow();
+            about.ShowDialog();
+        }
     }
 }

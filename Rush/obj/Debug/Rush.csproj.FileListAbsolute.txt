@@ -62,3 +62,6 @@ F:\Projects\Rush\Rush\obj\Debug\Rush.Properties.Resources.resources
 F:\Projects\Rush\Rush\obj\Debug\Rush.csproj.GenerateResource.Cache
 F:\Projects\Rush\Rush\obj\Debug\Rush.exe
 F:\Projects\Rush\Rush\obj\Debug\Rush.pdb
+F:\Projects\Rush\Rush\obj\Debug\Rush.csprojResolveAssemblyReference.cache
+F:\Projects\Rush\Rush\obj\Debug\Windows\AboutWindow.g.cs
+F:\Projects\Rush\Rush\obj\Debug\Windows\AboutWindow.baml
