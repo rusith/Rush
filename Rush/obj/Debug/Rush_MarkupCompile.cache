@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-F:\Projects\Rush\Rush\obj\Debug\
+D:\rusith\Projects\Rush\Rush\obj\Debug\
 Rush
 none
 false
 DEBUG;TRACE
-F:\Projects\Rush\Rush\App.xaml
+D:\rusith\Projects\Rush\Rush\App.xaml
 5184391686
 
 251332635807
-171352576710
+18272733201
 Windows\AboutWindow.xaml;Windows\FileOrderHelpWindow.xaml;Windows\LogWindow.xaml;Windows\MainWindow.xaml;Windows\ProcessWindow.xaml;
 
-False
+True
 

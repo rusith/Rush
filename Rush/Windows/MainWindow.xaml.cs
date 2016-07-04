@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -500,6 +501,36 @@ namespace Rush.Windows
         {
             var about = new AboutWindow();
             about.ShowDialog();
+        }
+
+        private void OnUpdateButtonClick(object sender, RoutedEventArgs e)
+        {
+            //var file = new FileInfo("http://rusith.github.io/Rush/versionInfo.info");
+            var file = new StreamReader("http://rusith.github.io/Rush/versionInfo.info");
+            var line = "";
+            var first = true;
+            while ((line = file.ReadLine()) != null)
+            {
+                if (first)
+                {
+                    var version = 0d;
+                    Double.TryParse(line,out version);
+                    if (version > Convert.ToDouble(ConfigurationManager.AppSettings["Version"]))
+                    {
+                        System.Diagnostics.Process.Start("http://rusith.github.io/Rush");
+                    }
+                    else
+                    {
+                        this.ShowMessageAsync("Latest Version", "You Have The Latest Version", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
+                    }
+                    first = false;
+                }
+            }
+
+            file.Close();
+
+            // Suspend the screen.
+            Console.ReadLine();
         }
     }
 }

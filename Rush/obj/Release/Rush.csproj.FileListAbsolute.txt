@@ -28,3 +28,6 @@ F:\Projects\Rush\Rush\obj\Release\Rush.Properties.Resources.resources
 F:\Projects\Rush\Rush\obj\Release\Rush.csproj.GenerateResource.Cache
 F:\Projects\Rush\Rush\obj\Release\Rush.exe
 F:\Projects\Rush\Rush\obj\Release\Rush.pdb
+D:\rusith\Projects\Rush\Rush\bin\Release\Rush.exe.config
+D:\rusith\Projects\Rush\Rush\obj\Release\Rush.exe
+D:\rusith\Projects\Rush\Rush\obj\Release\Rush.pdb
