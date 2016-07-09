@@ -2448,7 +2448,7 @@ g_HandleSystemReboot();
 <PostBuildCmdLine/>
 <PostBuildWait>0</PostBuildWait>
 <Filename>setup.exe</Filename>
-<OutputFolder>C:\RushRelease\Output</OutputFolder>
+<OutputFolder>C:\Users\srlso_000\Documents\Setup Factory 9\Output</OutputFolder>
 <SegmentSizeMode>0</SegmentSizeMode>
 <CustomSegSize>0</CustomSegSize>
 <CustomSegSizeMode>0</CustomSegSizeMode>

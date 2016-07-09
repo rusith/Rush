@@ -39,7 +39,6 @@ F:\Projects\Rush\Rush\bin\Release\taglib-sharp.dll
 F:\Projects\Rush\Rush\bin\Release\MahApps.Metro.pdb
 F:\Projects\Rush\Rush\bin\Release\MahApps.Metro.xml
 F:\Projects\Rush\Rush\bin\Release\policy.2.0.taglib-sharp.config
-F:\Projects\Rush\Rush\obj\Release\Rush.csprojResolveAssemblyReference.cache
 F:\Projects\Rush\Rush\obj\Release\Windows\AboutWindow.baml
 F:\Projects\Rush\Rush\obj\Release\Windows\FileOrderHelpWindow.baml
 F:\Projects\Rush\Rush\obj\Release\Windows\LogWindow.baml
