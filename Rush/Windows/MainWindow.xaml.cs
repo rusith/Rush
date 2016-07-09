@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -493,13 +494,39 @@ namespace Rush.Windows
 
         private void OnHomeButtonClick(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("http://rusith.github.io/Rush");
+            Process.Start("http://rusith.github.io/Rush");
         }
 
         private void OnAboutButtonClick(object sender, RoutedEventArgs e)
         {
             var about = new AboutWindow();
             about.ShowDialog();
+        }
+
+        private void OnWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (Properties.Settings.Default.sharedOnce) return;
+            var share = new ShareWindow();
+            share.ShowDialog();
+        }
+
+        private void OnTwitterClick(object sender, RoutedEventArgs e)
+        {
+            var url = "http://twitter.com/share?url={0}&text={1}&via={2}";
+            url = string.Format(url, "http://rusith.github.io/Rush/", "Organize your music library using Rush.", "Rush");
+            Process.Start(url);
+            if (Properties.Settings.Default.sharedOnce) return;
+            Properties.Settings.Default.sharedOnce = true;
+            Properties.Settings.Default.Save();
+        }
+
+        private void OnFacebookClick(object sender, RoutedEventArgs e)
+        {
+            var url = string.Format("http://www.facebook.com/share.php?u={0}", "http://rusith.github.io/Rush/");
+            Process.Start(url);
+            if (Properties.Settings.Default.sharedOnce) return;
+            Properties.Settings.Default.sharedOnce = true;
+            Properties.Settings.Default.Save();
         }
     }
 }

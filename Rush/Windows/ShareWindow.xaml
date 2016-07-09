@@ -1,0 +1,30 @@
+﻿<controls:MetroWindow  xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Rush.Windows"
+        mc:Ignorable="d"
+        x:Class="Rush.Windows.ShareWindow"
+        Title="Share" Height="142.346" Width="234.932" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <controls:MetroWindow.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded"/>
+        <EventTrigger RoutedEvent="UIElement.MouseLeave" SourceName="Facebook"/>
+    </controls:MetroWindow.Triggers>
+    <StackPanel>
+        <Label FontSize="24" Content="Share and support" HorizontalContentAlignment="Center"/>
+        <StackPanel Orientation="Horizontal" Height="55">
+            <Label x:Name="Facebook" Height="50" Width="50" Margin="50,0,0,0" ToolTip="share on facebook" MouseUp="OnFacebookClick">
+                <Label.Background>
+                    <ImageBrush ImageSource="/Rush;component/Images/facebook_logo.jpg"/>
+                </Label.Background>
+
+            </Label>
+            <Label x:Name="Twitter" Height="50" Width="50" Margin="20,0,0,0" ToolTip="Share on twitter" MouseUp="OnTwitterClick">
+                <Label.Background>
+                    <ImageBrush ImageSource="/Rush;component/Images/twitter_logo.png"/>
+                </Label.Background>
+            </Label>
+        </StackPanel>
+    </StackPanel>
+</controls:MetroWindow>

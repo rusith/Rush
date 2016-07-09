@@ -7,6 +7,7 @@ namespace Rush
     {
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
+
             var rushController = new RushController();
             rushController.StartProgram();
         }

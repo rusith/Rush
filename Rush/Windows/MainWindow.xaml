@@ -3,11 +3,21 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Rush" Height="316" MaxHeight="316" Width="645" MaxWidth="645"
-        xmlns:vc="clr-namespace:Rush.Converters" Icon="/Rush;component/Images/logo.PNG">
+        xmlns:vc="clr-namespace:Rush.Converters" Icon="/Rush;component/Images/logo.PNG" Closing="OnWindowClosing">
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
             <Button Content="about" Name="AboutButton" Click="OnAboutButtonClick" />
             <Button Content="home" ToolTip="Goto Homepage" Click="OnHomeButtonClick" ></Button>
+            <Button Name="Facebook" Click="OnFacebookClick" Width="15" ToolTip="Share On Facebook">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Rush;component/Images/facebook_logo.jpg"/>
+                </Button.Background>
+            </Button>
+            <Button Name="Twitter" Click="OnTwitterClick" Width="15" ToolTip="Share On Twitter">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Rush;component/Images/twitter_logo.png"/>
+                </Button.Background>
+            </Button>
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
     <Window.Resources>
