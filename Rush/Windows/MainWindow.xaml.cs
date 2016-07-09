@@ -1,9 +1,11 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -527,6 +529,45 @@ namespace Rush.Windows
             if (Properties.Settings.Default.sharedOnce) return;
             Properties.Settings.Default.sharedOnce = true;
             Properties.Settings.Default.Save();
+        }
+
+        private void OnUpdateButtonClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var client = new WebClient();
+                var stream = client.OpenRead("http://rusith.github.io/Rush/versionInfo.info");
+                if(stream==null)
+                    throw new Exception("");
+
+                var reader = new StreamReader(stream);
+                string line;
+                var first = true;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (!first)
+                        continue;
+                    double version;
+                    Double.TryParse(line, out version);
+                    if (version > Convert.ToDouble(ConfigurationManager.AppSettings["Version"]))
+                    {
+                        Process.Start("http://rusith.github.io/Rush");
+                    }
+                    else
+                    {
+                        this.ShowMessageAsync("Latest Version", "You Have The Latest Version", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
+                    }
+                    first = false;
+                }
+
+                reader.Close();
+                stream.Close();
+            }
+            catch (Exception)
+            {
+
+                this.ShowMessageAsync("Error", "Unable To Check version. please make sure you  are connected to the Internet and try again", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
+            }
         }
     }
 }

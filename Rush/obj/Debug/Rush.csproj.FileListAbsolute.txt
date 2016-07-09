@@ -65,3 +65,16 @@ F:\Projects\Rush\Rush\obj\Debug\Rush.pdb
 F:\Projects\Rush\Rush\obj\Debug\Rush.csprojResolveAssemblyReference.cache
 F:\Projects\Rush\Rush\obj\Debug\Windows\AboutWindow.g.cs
 F:\Projects\Rush\Rush\obj\Debug\Windows\AboutWindow.baml
+D:\rusith\Projects\Rush\Rush\obj\Debug\Windows\AboutWindow.baml
+D:\rusith\Projects\Rush\Rush\obj\Debug\Windows\LogWindow.baml
+D:\rusith\Projects\Rush\Rush\obj\Debug\Windows\AboutWindow.g.cs
+D:\rusith\Projects\Rush\Rush\obj\Debug\Windows\LogWindow.g.cs
+D:\rusith\Projects\Rush\Rush\bin\Debug\MahApps.Metro.dll
+D:\rusith\Projects\Rush\Rush\bin\Debug\policy.2.0.taglib-sharp.dll
+D:\rusith\Projects\Rush\Rush\bin\Debug\System.Windows.Interactivity.dll
+D:\rusith\Projects\Rush\Rush\bin\Debug\taglib-sharp.dll
+D:\rusith\Projects\Rush\Rush\bin\Debug\MahApps.Metro.pdb
+D:\rusith\Projects\Rush\Rush\bin\Debug\MahApps.Metro.xml
+D:\rusith\Projects\Rush\Rush\bin\Debug\policy.2.0.taglib-sharp.config
+F:\Projects\Rush\Rush\obj\Debug\Windows\ShareWindow.g.cs
+F:\Projects\Rush\Rush\obj\Debug\Windows\ShareWindow.baml

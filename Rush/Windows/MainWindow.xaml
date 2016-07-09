@@ -6,6 +6,7 @@
         xmlns:vc="clr-namespace:Rush.Converters" Icon="/Rush;component/Images/logo.PNG" Closing="OnWindowClosing">
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
+            <Button Content="update" Name="UpdateButton" ToolTip="Check For Update . This Will Open Homepage if update available" Click="OnUpdateButtonClick"/>
             <Button Content="about" Name="AboutButton" Click="OnAboutButtonClick" />
             <Button Content="home" ToolTip="Goto Homepage" Click="OnHomeButtonClick" ></Button>
             <Button Name="Facebook" Click="OnFacebookClick" Width="15" ToolTip="Share On Facebook">

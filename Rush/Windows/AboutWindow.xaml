@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="About" Height="320.301" Width="310.15" ResizeMode="NoResize" Icon="/Rush;component/logo.ico">
+        Title="About" Height="320.301" Width="310.15" ResizeMode="NoResize" Icon="/Rush;component/logo.ico" Loaded="OnWindowLoaded">
     <Grid>
         <Label Margin="94,21,99,157" >
             <Label.Background>
@@ -12,7 +12,7 @@
             </Label.Background>
         </Label>
         <Label Margin="102,117,106,107" FontWeight="Bold" FontSize="29.333">Rush</Label>
-        <Label   HorizontalAlignment="Left" Height="31" Margin="83,162,0,0" VerticalAlignment="Top" Width="209" FontWeight="Bold">Music File Organizer</Label>
+        <Label Name="HeadLabel" Height="31" Margin="10,162,10,0" VerticalAlignment="Top" FontWeight="Bold" HorizontalContentAlignment="Center">Music File Organizer</Label>
         <Label Margin="67,198,69,39">
             Written By : Shanaka Rusith
         </Label>
