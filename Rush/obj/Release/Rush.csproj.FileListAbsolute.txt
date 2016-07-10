@@ -39,6 +39,7 @@ F:\Projects\Rush\Rush\bin\Release\taglib-sharp.dll
 F:\Projects\Rush\Rush\bin\Release\MahApps.Metro.pdb
 F:\Projects\Rush\Rush\bin\Release\MahApps.Metro.xml
 F:\Projects\Rush\Rush\bin\Release\policy.2.0.taglib-sharp.config
+F:\Projects\Rush\Rush\obj\Release\Rush.csprojResolveAssemblyReference.cache
 F:\Projects\Rush\Rush\obj\Release\Windows\AboutWindow.baml
 F:\Projects\Rush\Rush\obj\Release\Windows\FileOrderHelpWindow.baml
 F:\Projects\Rush\Rush\obj\Release\Windows\LogWindow.baml
@@ -47,6 +48,7 @@ F:\Projects\Rush\Rush\obj\Release\Windows\AboutWindow.g.cs
 F:\Projects\Rush\Rush\obj\Release\Windows\FileOrderHelpWindow.g.cs
 F:\Projects\Rush\Rush\obj\Release\Windows\LogWindow.g.cs
 F:\Projects\Rush\Rush\obj\Release\Windows\MainWindow.g.cs
+F:\Projects\Rush\Rush\obj\Release\Windows\NewVersionWindow.g.cs
 F:\Projects\Rush\Rush\obj\Release\Windows\ProcessWindow.g.cs
 F:\Projects\Rush\Rush\obj\Release\Windows\ShareWindow.g.cs
 F:\Projects\Rush\Rush\obj\Release\App.g.cs
@@ -54,6 +56,7 @@ F:\Projects\Rush\Rush\obj\Release\GeneratedInternalTypeHelper.g.cs
 F:\Projects\Rush\Rush\obj\Release\Rush_MarkupCompile.cache
 F:\Projects\Rush\Rush\obj\Release\Rush_MarkupCompile.lref
 F:\Projects\Rush\Rush\obj\Release\Windows\MainWindow.baml
+F:\Projects\Rush\Rush\obj\Release\Windows\NewVersionWindow.baml
 F:\Projects\Rush\Rush\obj\Release\Windows\ProcessWindow.baml
 F:\Projects\Rush\Rush\obj\Release\Windows\ShareWindow.baml
 F:\Projects\Rush\Rush\obj\Release\Rush.g.resources
@@ -61,6 +64,3 @@ F:\Projects\Rush\Rush\obj\Release\Rush.Properties.Resources.resources
 F:\Projects\Rush\Rush\obj\Release\Rush.csproj.GenerateResource.Cache
 F:\Projects\Rush\Rush\obj\Release\Rush.exe
 F:\Projects\Rush\Rush\obj\Release\Rush.pdb
-F:\Projects\Rush\Rush\obj\Release\Rush.csprojResolveAssemblyReference.cache
-F:\Projects\Rush\Rush\obj\Release\Windows\NewVersionWindow.g.cs
-F:\Projects\Rush\Rush\obj\Release\Windows\NewVersionWindow.baml
