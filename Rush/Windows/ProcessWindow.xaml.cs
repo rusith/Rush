@@ -349,7 +349,7 @@ namespace Rush.Windows
                             }
                             log.Add(new LogItem(LogItem.LogItemType.PathTooLong, "Cannot Copy File '{0}' because the path is too long. the file copied to 'PathTooLong' folder", file.DestinationFile.Name));
                         }
-                        if (file.Copied)
+                        if ( _move && file.Copied)
                         {
                             try
                             {
