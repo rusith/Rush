@@ -8,7 +8,8 @@ https://github.com/rusith/Rush/releases/download/1.0/setup.exe
 		<h4>Rush v1.1</h4>
 		<h5>what's new</h5>
 		<p>
-			added new feature -> move files (move files from source folder after copying) 
+			added new feature -> move files (move files from source folder after copying)
+			bug fix -> stuck when path is too long (source file)
 		</p>
 	</body>
 </html>
