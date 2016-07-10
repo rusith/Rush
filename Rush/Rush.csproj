@@ -80,6 +80,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\RushConfiguration.cs" />
     <Compile Include="Controllers\RushController.cs" />
     <Compile Include="Converters\BoolToColorConverter.cs" />
     <Compile Include="Converters\ComboBoxAndButtonTooltipMultiValueConverter.cs" />

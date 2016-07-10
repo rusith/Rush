@@ -1,5 +1,6 @@
 ﻿
 using System.Configuration;
+using Rush.Common;
 
 namespace Rush.Windows
 {
@@ -17,7 +18,7 @@ namespace Rush.Windows
 
         private void OnWindowLoaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            HeadLabel.Content = string.Format("Music File Organizer v{0}", ConfigurationManager.AppSettings["Version"]);
+            HeadLabel.Content = string.Format("Music File Organizer v{0}", RushConfiguration.Config.Version);
         }
     }
 }

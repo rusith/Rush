@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using MahApps.Metro.Controls.Dialogs;
+using Rush.Common;
 using Rush.Extensions;
 using Rush.Models;
 using WinForms = System.Windows.Forms;
@@ -567,11 +568,10 @@ namespace Rush.Windows
                     }
                     
                 }
-                if (newVersion > Convert.ToDouble(ConfigurationManager.AppSettings["Version"]))
+                if (newVersion > Convert.ToDouble(RushConfiguration.Config.Version))
                 {
                     var version = new NewVersionWindow(path, html.ToString());
                     version.ShowDialog();
-                    Process.Start("http://rusith.github.io/Rush");
                 }
                 else
                 {
