@@ -2465,8 +2465,8 @@ g_HandleSystemReboot();
 <Arguments/>
 <UseCustomIcon>1</UseCustomIcon>
 <CustomIconFile>C:\RushRelease\logo.ico</CustomIconFile>
-<ResourceFileVersion>1.0</ResourceFileVersion>
-<ResourceProductVersion>1.0</ResourceProductVersion>
+<ResourceFileVersion>1.1</ResourceFileVersion>
+<ResourceProductVersion>1.1</ResourceProductVersion>
 <ResourceCompanyName>Shanaka Rusith</ResourceCompanyName>
 <ResourceProductName>Rush Installer</ResourceProductName>
 <ResourceComments>Rush Installer</ResourceComments>
