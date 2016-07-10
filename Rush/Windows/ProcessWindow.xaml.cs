@@ -221,7 +221,7 @@ namespace Rush.Windows
                                                     fn += title;
                                                     break;
                                                 case FileNameItem.Trak:
-                                                    var track = taginfo == null ? 0 : taginfo.Tag.Track;
+                                                    var track = taginfo?.Tag.Track ?? 0;
                                                     if (track < 1)
                                                     {
                                                         log.Add(new LogItem(LogItem.LogItemType.TrackNotFound, "Track tag not found in file '{0}'. Track part of the file name will replace with empty string", file1.Name));
@@ -231,7 +231,6 @@ namespace Rush.Windows
                                                         fn += track.ToString();
                                                     break;
                                             }
-
                                         }
                                         fn += file1.Extension;
                                         newfile = Path.Combine(newfile, fn.ToSafeFileName());                        
@@ -244,17 +243,17 @@ namespace Rush.Windows
                                     break;
                             }
                         }
-                    try
-                    {
-                        file.DestinationFile = new FileInfo(newfile);
-                    }
-                    catch (PathTooLongException)
-                    {
-                        log.Add(new LogItem(LogItem.LogItemType.SourcePathTooLong, "Source File '{0}' Path is too long . cannot process the file. file will not be copied / deleted", file1.Name));
-                        file.Skip = true;
-                    }
-                    file.Processed = true;
-                        fileindex[0] = fileindex[0] + 1;
+                        try
+                        {
+                            file.DestinationFile = new FileInfo(newfile);
+                        }
+                        catch (PathTooLongException)
+                        {
+                            log.Add(new LogItem(LogItem.LogItemType.SourcePathTooLong, "Source File '{0}' Path is too long . cannot process the file. file will not be copied / deleted", file1.Name));
+                            file.Skip = true;
+                        }
+                        file.Processed = true;
+                            fileindex[0] = fileindex[0] + 1;
                     }
                     TitleLabel.Dispatcher.Invoke(() =>
                     {

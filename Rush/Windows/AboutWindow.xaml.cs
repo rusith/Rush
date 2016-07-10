@@ -1,6 +1,4 @@
-﻿
-using System.Configuration;
-using Rush.Common;
+﻿using Rush.Common;
 
 namespace Rush.Windows
 {

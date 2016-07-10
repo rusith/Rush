@@ -63,3 +63,4 @@ F:\Projects\Rush\Rush\obj\Release\Rush.Properties.Resources.resources
 F:\Projects\Rush\Rush\obj\Release\Rush.csproj.GenerateResource.Cache
 F:\Projects\Rush\Rush\obj\Release\Rush.exe
 F:\Projects\Rush\Rush\obj\Release\Rush.pdb
+F:\Projects\Rush\Rush\obj\Release\Rush.csprojResolveAssemblyReference.cache
