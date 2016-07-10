@@ -14,6 +14,8 @@ namespace Rush.Models
         public FileInfo DestinationFile { get; set; }
         public bool Processed { get; set; }
         public bool Copied { get; set; }
+        public bool SourceDeleted { get; set; }
+        public bool Skip { get; set; }
 
     }
 }

@@ -12,11 +12,11 @@ namespace Rush.Windows
     public partial class LogWindow
     {
         private readonly List<FileInformation> _files; 
-        private List<LogItem> _log;
+        private readonly List<LogItem> _log;
         private readonly DirectoryInfo _destinationFolder;
         private readonly HashSet<string> _souces;
-         
-        public LogWindow(List<FileInformation> files ,List<LogItem> log,DirectoryInfo destination,HashSet<string> soureces  )
+
+        public LogWindow(List<FileInformation> files ,List<LogItem> log,DirectoryInfo destination,HashSet<string> soureces)
         {
             _files = files;
             _log = log;
@@ -43,8 +43,9 @@ namespace Rush.Windows
         {
             var processed = _files.Count(i => i.Processed);
             var copied = _files.Count(i => i.Copied);
-            InformationLabel.Content = string.Format("Processed {0} Files , Copied {1} Files , From {2} Files",
-                processed, copied,_files.Count);
+            var deleted = _files.Count(i => i.SourceDeleted);
+            InformationLabel.Content = string.Format("Processed {0} Files , Copied {1} Files ,Deleted {2} Files, From {3} Files",
+                processed, copied,deleted,_files.Count);
             TypeComboBox.Items.Add("All");
             var types= _log.GroupBy(l => l.MessageType).Select(g=>g);
             foreach (var type in types)
@@ -80,8 +81,9 @@ namespace Rush.Windows
             }
             var processed = _files.Count(i => i.Processed);
             var copied = _files.Count(i => i.Copied);
-            str.AppendFormat("Processed {0} Files , Copied {1} Files , From {2} Files",
-                processed, copied, _files.Count);
+            var deleted = _files.Count(i => i.SourceDeleted);
+            str.AppendFormat("Processed {0} Files , Copied {1} Files ,Deleted {2} Files, From {3} Files",
+                processed, copied, deleted, _files.Count);
             str.Append(Environment.NewLine + Environment.NewLine + Environment.NewLine);
             var groups = from f in _log
                 group f by f.MessageType

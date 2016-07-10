@@ -17,10 +17,10 @@ namespace Rush.Windows
         private readonly DirectoryInfo _destination;
         private readonly List<FileInformation> _files;
         private readonly bool _overwrite;
-
+        private readonly bool _move;
         private CancellationTokenSource _cancellation;
           
-        public ProcessWindow(OrganizeOrder order,HashSet<string> sources,DirectoryInfo destination,List<FileInformation> files,bool overwrite  )
+        public ProcessWindow(OrganizeOrder order,HashSet<string> sources,DirectoryInfo destination,List<FileInformation> files,bool overwrite ,bool move )
         {
             _order = order;
             _sources = sources;
@@ -28,6 +28,7 @@ namespace Rush.Windows
             _files = files;
             _overwrite = overwrite;
             _cancellation=new CancellationTokenSource();
+            _move = move;
             InitializeComponent();
         }
 
@@ -37,6 +38,7 @@ namespace Rush.Windows
             {
                 try
                 {
+
                     ProgressBar.Dispatcher.Invoke(() =>
                     {
                         ProgressBar.Minimum = 0;
@@ -232,7 +234,7 @@ namespace Rush.Windows
 
                                         }
                                         fn += file1.Extension;
-                                        newfile = Path.Combine(newfile, fn.ToSafeFileName());
+                                        newfile = Path.Combine(newfile, fn.ToSafeFileName());                        
                                     }
                                     else
                                     {
@@ -242,19 +244,33 @@ namespace Rush.Windows
                                     break;
                             }
                         }
+                    try
+                    {
                         file.DestinationFile = new FileInfo(newfile);
-                        file.Processed = true;
+                    }
+                    catch (PathTooLongException)
+                    {
+                        log.Add(new LogItem(LogItem.LogItemType.SourcePathTooLong, "Source File '{0}' Path is too long . cannot process the file. file will not be copied / deleted", file1.Name));
+                        file.Skip = true;
+                    }
+                    file.Processed = true;
                         fileindex[0] = fileindex[0] + 1;
                     }
                     TitleLabel.Dispatcher.Invoke(() =>
                     {
-                        TitleLabel.Content = "Copying  Files";
+                        TitleLabel.Content = string.Format("{0} Files",_move? "Moving":"Copying");
                     });
                     fileindex[0] = 0;
                     _cancellation = new CancellationTokenSource();
                     var pathTooLong = new DirectoryInfo(Path.Combine(_destination.FullName, "PathTooLong"));
                     foreach (var file in _files)
                     {
+                        if (file.Skip || (file.Processed==false))
+                        {
+                            fileindex[0]++;
+                            continue;
+                        }
+                            
                         if (_cancellation.IsCancellationRequested)
                         {
                             if (log.Count > 0)
@@ -333,6 +349,28 @@ namespace Rush.Windows
                             }
                             log.Add(new LogItem(LogItem.LogItemType.PathTooLong, "Cannot Copy File '{0}' because the path is too long. the file copied to 'PathTooLong' folder", file.DestinationFile.Name));
                         }
+                        if (file.Copied)
+                        {
+                            try
+                            {
+                                file.SourceFile.Delete();
+                                file.SourceDeleted = true;
+                            }
+                            catch (Exception)
+                            {
+                                File.SetAttributes(file.SourceFile.FullName, FileAttributes.Normal);
+                                try
+                                {
+                                    file.SourceFile.Delete();
+                                    file.SourceDeleted = true;
+                                }
+                                catch (Exception)
+                                {
+                                    log.Add(new LogItem(LogItem.LogItemType.CannotDeleteSourceFile, "Cannot Delete Source File '{0}' But File Is Copied", file.SourceFile.Name));
+                                }
+                            }
+                        }
+                       
                     }
                     if (log.Count > 0)
                     {
@@ -347,12 +385,10 @@ namespace Rush.Windows
                         Close();
                     });
                 }
-                catch (Exception )
+                catch (Exception)
                 {
                     // ignored
                 }
-
-
 
             },_cancellation.Token);
            

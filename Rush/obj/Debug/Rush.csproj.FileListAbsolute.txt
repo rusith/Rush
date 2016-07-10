@@ -78,3 +78,5 @@ D:\rusith\Projects\Rush\Rush\bin\Debug\MahApps.Metro.xml
 D:\rusith\Projects\Rush\Rush\bin\Debug\policy.2.0.taglib-sharp.config
 F:\Projects\Rush\Rush\obj\Debug\Windows\ShareWindow.g.cs
 F:\Projects\Rush\Rush\obj\Debug\Windows\ShareWindow.baml
+F:\Projects\Rush\Rush\obj\Debug\Windows\NewVersionWindow.g.cs
+F:\Projects\Rush\Rush\obj\Debug\Windows\NewVersionWindow.baml

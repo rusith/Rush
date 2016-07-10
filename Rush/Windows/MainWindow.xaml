@@ -88,7 +88,9 @@
                             </Button.IsEnabled>
                         </Button>
                         <Button x:Name="ExitButton" Style="{DynamicResource SquareButtonStyle}" Margin="10,0,0,0" Width="57" Click="OnExitButtonClick" IsCancel="True" >Exit</Button>
-                        <CheckBox x:Name="OverwriteExistingCheckBox" FontWeight="Bold" Margin="350,0,0,0" Width="137" Height="18" IsChecked="True" FontFamily="Segoe UI">Overwrite Existing</CheckBox>
+                        <CheckBox Name="MoveCheckbox" Width="57" FontWeight="Bold" Margin="290,0,10,0" ToolTip="enable Moving files" Checked="OnMoveChecked">Move</CheckBox>
+                        <CheckBox x:Name="OverwriteExistingCheckBox" FontWeight="Bold"  Width="137" Height="18" IsChecked="True" FontFamily="Segoe UI">Overwrite Existing</CheckBox>
+                        
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

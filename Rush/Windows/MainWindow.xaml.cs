@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -442,7 +443,7 @@ namespace Rush.Windows
             }
             var overwrite = OverwriteExistingCheckBox.IsChecked.GetValueOrDefault();
             var progress = new ProcessWindow(_order, sources, destination,
-                 files.ToList(), overwrite);
+                 files.ToList(), overwrite,MoveCheckbox.IsChecked.GetValueOrDefault());
 
             progress.ShowDialog();
         }
@@ -543,21 +544,38 @@ namespace Rush.Windows
                 var reader = new StreamReader(stream);
                 string line;
                 var first = true;
+                var newVersion = 0.0;
+                var html = new StringBuilder();
+                var second = false;
+                var path = "";
                 while ((line = reader.ReadLine()) != null)
                 {
-                    if (!first)
-                        continue;
-                    double version;
-                    Double.TryParse(line, out version);
-                    if (version > Convert.ToDouble(ConfigurationManager.AppSettings["Version"]))
+                    if (first)
                     {
-                        Process.Start("http://rusith.github.io/Rush");
+                        Double.TryParse(line, out newVersion);
+                        first = false;
+                        second = true;
+                    }
+                    else if (second)
+                    {
+                        path = line;
+                        second = false;
                     }
                     else
                     {
-                        this.ShowMessageAsync("Latest Version", "You Have The Latest Version", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
+                        html.AppendLine(line);
                     }
-                    first = false;
+                    
+                }
+                if (newVersion > Convert.ToDouble(ConfigurationManager.AppSettings["Version"]))
+                {
+                    var version = new NewVersionWindow(path, html.ToString());
+                    version.ShowDialog();
+                    Process.Start("http://rusith.github.io/Rush");
+                }
+                else
+                {
+                    this.ShowMessageAsync("Latest Version", "You Have The Latest Version", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
                 }
 
                 reader.Close();
@@ -567,6 +585,15 @@ namespace Rush.Windows
             {
 
                 this.ShowMessageAsync("Error", "Unable To Check version. please make sure you  are connected to the Internet and try again", MessageDialogStyle.Affirmative, new MetroDialogSettings { AffirmativeButtonText = "OK" });
+            }
+        }
+
+        private async void OnMoveChecked(object sender, RoutedEventArgs e)
+        {
+            var result = await this.ShowMessageAsync("confirm Enable Move", "Are you sure ? do you want to Enable Moving Files? \nWhen Moving enabled, source files will delete after copying . \nenable at your own risk!", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings { AffirmativeButtonText = "Enable Anyway", NegativeButtonText = "Cancel" });
+            if (result == MessageDialogResult.Negative)
+            {
+                MoveCheckbox.IsChecked = false;
             }
         }
     }

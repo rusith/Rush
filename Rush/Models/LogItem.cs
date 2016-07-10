@@ -15,7 +15,10 @@
             TrackNotFound,
             GenreNotFound,
             YearNotFound,
-            CannotDeleteExistingFile
+            CannotDeleteExistingFile,
+            CannotDeleteSourceFile,
+            SourcePathTooLong,
+            CannotDeleteEmptySourceFolder
         }
 
         public LogItem(LogItemType type, string message,params object[] messageparams)
@@ -57,6 +60,12 @@
                         return "Year Not Found";
                     case LogItemType.CannotDeleteExistingFile:
                         return "Cannot Delete Existing File";
+                    case LogItemType.CannotDeleteSourceFile:
+                        return "Cannot Delete Source File";
+                    case LogItemType.SourcePathTooLong:
+                        return "Source Path Too Long";
+                    case LogItemType.CannotDeleteEmptySourceFolder:
+                        return "Cannot Delete Empty Source Folder";
                     default:
                         return "";
                 }
@@ -91,6 +100,12 @@
                     return "Year Not Found";
                 case LogItemType.CannotDeleteExistingFile:
                     return "Cannot Delete Existing File";
+                case LogItemType.CannotDeleteSourceFile:
+                    return "Cannot Delete Source File";
+                case LogItemType.SourcePathTooLong:
+                    return "Source Path Too Long";
+                case LogItemType.CannotDeleteEmptySourceFolder:
+                    return "Cannot Delete Empty Source Folder";
                 default:
                     return "";
             }
@@ -124,6 +139,12 @@
                     return LogItemType.YearNotFound;
                 case "Cannot Delete Existing File":
                     return LogItemType.CannotDeleteExistingFile;
+                case "Cannot Delete Source File":
+                    return LogItemType.CannotDeleteSourceFile;
+                case "Source Path Too Long":
+                    return  LogItemType.SourcePathTooLong;
+                case "Cannot Delete Empty Source Folder":
+                    return LogItemType.CannotDeleteEmptySourceFolder;
                 default:
                     return LogItemType.Duplicate;
             }
