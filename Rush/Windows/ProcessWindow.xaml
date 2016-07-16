@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vc="clr-namespace:Rush.Converters"
         mc:Ignorable="d"
-        Title="Processing" Height="168" Width="719" Loaded="OnWindowLoaded" Icon="/Rush;component/logo.ico" ResizeMode="NoResize">
+        Title="Processing" Height="168" Width="719" Loaded="OnWindowLoaded" Icon="/Rush;component/logo.ico" ResizeMode="NoResize" Closing="OnWindowClosing">
     <Window.Resources>
         <vc:ProgressToInfoConverter x:Key="ProgressToInfoConverter"></vc:ProgressToInfoConverter>
     </Window.Resources>

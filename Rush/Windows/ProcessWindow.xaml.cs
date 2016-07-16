@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using MahApps.Metro.Controls.Dialogs;
 using Rush.Extensions;
 using Rush.Models;
 
@@ -260,7 +261,6 @@ namespace Rush.Windows
                         TitleLabel.Content = string.Format("{0} Files",_move? "Moving":"Copying");
                     });
                     fileindex[0] = 0;
-                    _cancellation = new CancellationTokenSource();
                     var pathTooLong = new DirectoryInfo(Path.Combine(_destination.FullName, "PathTooLong"));
                     foreach (var file in _files)
                     {
@@ -371,6 +371,7 @@ namespace Rush.Windows
                         }
                        
                     }
+                    _cancellation = new CancellationTokenSource();
                     if (log.Count > 0)
                     {
                         Dispatcher.Invoke(() =>
@@ -401,6 +402,11 @@ namespace Rush.Windows
         private void OnWindowLoaded(object sender, RoutedEventArgs e)
         {
             Organize();
+        }
+
+        private async void OnWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            _cancellation.Cancel();
         }
     }
 }
