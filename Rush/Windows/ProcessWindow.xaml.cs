@@ -206,7 +206,7 @@ namespace Rush.Windows
                                                     var lit =
                                                         _order.FileNameTemplate.Literel[litindex];
                                                     litindex++;
-                                                    if (string.IsNullOrWhiteSpace(lit))
+                                                    if (string.IsNullOrEmpty(lit))
                                                         fn += "";
                                                     else
                                                         fn += lit;

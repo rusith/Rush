@@ -168,7 +168,7 @@
 <SCStartRoot>1</SCStartRoot>
 <SCStartProgs>0</SCStartProgs>
 <SCAppFld>1</SCAppFld>
-<SCStartup>1</SCStartup>
+<SCStartup>0</SCStartup>
 <SCDesk>1</SCDesk>
 <SCQLaunch>0</SCQLaunch>
 <SCStartPinOption>2</SCStartPinOption>
